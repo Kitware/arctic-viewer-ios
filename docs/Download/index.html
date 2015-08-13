@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Download Datasets</title>
+  <meta name="description" content="A Native iOS App for Data Exploration">
+
+  <link rel="stylesheet" href="/arctic-viewer/css/main.css">
+  <link rel="canonical" href="/arctic-viewer/docs/Download/">
+  <link rel="alternate" type="application/rss+xml" title="Arctic Viewer" href="/arctic-viewer/feed.xml" />
+</head>
+
+
+<body>
+
+<header class="site-header">
+
+    <nav class="mobile-nav show-on-mobiles">
+        <a class="page-link" href="/arctic-viewer/"><i class="fa fa-home fa-fw fa-lg"></i></a>
+<a class="page-link" href="/arctic-viewer/docs/home"><i class="fa fa-book fa-fw fa-lg"></i></a>
+<a class="page-link" href="/arctic-viewer/news"><i class="fa fa-newspaper-o fa-fw fa-lg"></i></a>
+    </nav>
+    <div class="wrapper">
+
+        <a class="site-title center-on-mobiles" href="/arctic-viewer/">
+            <img src="/arctic-viewer/img/logo.png" height="40" alt="Logo">
+            Arctic Viewer
+        </a>
+        <nav class="site-nav hide-on-mobiles">
+            <a href="#" class="menu-icon">
+                <svg viewBox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+                </svg>
+            </a>
+            <div class="trigger">
+                <a class="page-link" href="/arctic-viewer/">Home</a>
+<a class="page-link" href="/arctic-viewer/docs/home">Docs</a>
+<a class="page-link" href="/arctic-viewer/news">News</a>
+
+            </div>
+        </nav>
+    </div>
+
+</header>
+
+<div class="wrapper">
+    <nav class="docs-nav hide-on-mobiles">
+        <a href="#" class="menu-icon">
+            <svg viewBox="0 0 18 15">
+                <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+                <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+                <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+        </a>
+    </nav>
+</div>
+
+<div class="page-content">
+    <div class="wrapper">
+          <section class="docs">
+    <div class="grid">
+
+      <div class="docs-nav-mobile unit whole show-on-mobiles">
+  <select onchange="if (this.value) window.location.href=this.value">
+    <option value="">Navigate the docs…</option>
+    
+    <optgroup label="Getting Started">
+      
+
+
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <option value="/arctic-viewer/docs/home/">Getting Started</option>
+    
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+    
+      <option value="/arctic-viewer/docs/gallery/">Gallery</option>
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+    </optgroup>
+    
+    <optgroup label="Usage">
+      
+
+
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+      <option value="/arctic-viewer/docs/MainMenu/">Main Menu</option>
+    
+  
+    
+  
+    
+  
+
+  
+
+  
+    
+      <option value="/arctic-viewer/docs/Download/">Download Datasets</option>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+      <option value="/arctic-viewer/docs/Explore/">Explore Data</option>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <option value="/arctic-viewer/docs/Update/">Update</option>
+    
+  
+
+
+    </optgroup>
+    
+    <optgroup label="Developer guide">
+      <option value="/arctic-viewer/dev/">Development</option>
+      
+      
+    </optgroup>
+  </select>
+</div>
+
+
+      <div class="unit five-sixths">
+        <article>
+            
+          <h1>Download Datasets</h1>
+          <h2>Download from App</h2>
+
+<p>Tapping on the download button from the <a href="/docs/MainMenu.png">main menu</a>
+leads to the download page. From here you can download datasets
+that the app can explore. For now we have provided several sample datasets.
+You can provide your own by putting a dataset url in the text input bar.
+The file formats that Arctic viewer supports are .tar, .tar.gz, .tgz,
+.gz, and .zip. When the download begins the download button turns into a
+cancel button. While downloading and while this page is open, the device will
+indefinitely stay on however you may navigate to other pages if you wish.</p>
+
+<p><img src="/docs/download-md.png" width="250px" alt="download screen"></p>
+
+<p>A tag on the top right corner of a dataset means that it&#39;s already
+on the device, but there&#39;s nothing stopping you from
+redownloading it. Tapping on a sample dataset will supplement the url in
+the input bar with a dataset title and its filesize.</p>
+
+<h2>Download from Web</h2>
+
+<p>If you open any of the supported formats in Safari you&#39;ll
+be presented an option to open the file in Arctic Viewer. Note
+that Safari downloads the file first then prompts you, it does not
+give any progress indicator while doing this so you may be staring
+at a blank page for a bit. Best to take the url and download
+it through the download page if it&#39;s a large file.</p>
+
+<h2>Import from iTunes</h2>
+
+<p>You can sync datasets through iTunes by either adding a folder or
+a supported file type and syncing it. With the device connected
+to the computer, navigate to the apps section of the device and scroll down.
+You&#39;ll see a list of apps that support iTunes file sharing, click on
+Arctic Viewer and you&#39;ll see a list of available datasets. Drag and drop the
+dataset on to the list or add it with the add button. Depending on the
+dataset size it may take some time before it appears in the list. Press sync
+and the datasets will be transfered. If the dataset is compressed
+it will deflate it when Arctic Viewer starts up.</p>
+
+<p><img src="/docs/iTunes.png" width="90%" alt="iTunes file add screen"></p>
+
+          <div class="section-nav">
+    <div class=""grid">
+  <div class="unit half">
+    
+      <span class="prev disabled">Back</span>
+    
+  </div>
+    <div class="unit half">
+    
+      <span class="next disabled">Next ></span>
+    
+  </div>
+  </div>
+  <div class="clear"></div>
+</div>
+
+
+        </article>
+      </div>
+
+      <div class="unit one-sixth hide-on-mobiles">
+  <aside>
+    
+    <h4>Getting Started</h4>
+    
+
+<ul>
+
+  
+
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <li class=""><a href="/arctic-viewer/docs/home/">Getting Started</a></li>
+    
+  
+    
+  
+
+
+  
+
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+      <li class=""><a href="/arctic-viewer/docs/gallery/">Gallery</a></li>
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+</ul>
+
+    
+    <h4>Usage</h4>
+    
+
+<ul>
+
+  
+
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+      <li class=""><a href="/arctic-viewer/docs/MainMenu/">Main Menu</a></li>
+    
+  
+    
+  
+    
+  
+
+
+  
+
+  
+    
+  
+
+  
+    
+      <li class="current"><a href="/arctic-viewer/docs/Download/">Download Datasets</a></li>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+  
+
+  
+    
+  
+
+  
+    
+  
+    
+      <li class=""><a href="/arctic-viewer/docs/Explore/">Explore Data</a></li>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+  
+
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <li class=""><a href="/arctic-viewer/docs/Update/">Update</a></li>
+    
+  
+
+
+</ul>
+
+    
+    <h4>Developer guide</h4>
+    <ul>
+      <li><a class="page-link" href="/arctic-viewer/dev/">Development</a></li>
+      
+      
+    </ul>
+  </aside>
+</div>
+
+
+      <div class="clear"></div>
+
+    </div>
+  </section>
+
+    </div>
+</div>
+
+<div class="site-footer">
+    <div class="grid">
+        <div class="unit whole">
+            <div class="wrapper">
+                <p>&copy;&nbsp;2015 <a href="http://www.kitware.com">Kitware, Inc.</a> under the terms of the BSD 3 Clause Open Source
+                    <a href="Kitware/arctic-viewer/blob/master/LICENSE">License</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Arctic Viewer</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="/arctic-viewer/css/main.css">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+<header class="site-header">
+
+    <nav class="mobile-nav show-on-mobiles">
+        <a class="page-link" href="/arctic-viewer/"><i class="fa fa-home fa-fw fa-lg"></i></a>
+        <a class="page-link" href="/arctic-viewer/docs/home"><i class="fa fa-book fa-fw fa-lg"></i></a>
+        <a class="page-link" href="/arctic-viewer/news"><i class="fa fa-newspaper-o fa-fw fa-lg"></i></a>
+    </nav>
+    <div class="wrapper">
+
+        <a class="site-title center-on-mobiles" href="/">
+            <img src="/arctic-viewer/img/logo.png" height="40" alt="Logo">
+            Arctic Viewer
+        </a>
+        <nav class="site-nav hide-on-mobiles">
+            <a href="#" class="menu-icon">
+                <svg viewBox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+                </svg>
+            </a>
+            <div class="trigger">
+                <a class="page-link" href="/arctic-viewer/">Home</a>
+                <a class="page-link" href="/arctic-viewer/docs/home">Docs</a>
+                <a class="page-link" href="/arctic-viewer/news">News</a>
+            </div>
+        </nav>
+    </div>
+
+</header>
+
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>TonicViewController.swift</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="MainViewController.html">
+                    MainViewController.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="MainViewTableCell.html">
+                    MainViewTableCell.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="ObjCBridge.html">
+                    ObjCBridge.h
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="Paths.html">
+                    Paths.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="TonicViewController.html">
+                    TonicViewController.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="DemoServer.html">
+                    DemoServer.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpHandlers.html">
+                    HttpHandlers.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpParser.html">
+                    HttpParser.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpRequest.html">
+                    HttpRequest.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpResponse.html">
+                    HttpResponse.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpServer.html">
+                    HttpServer.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="Socket.html">
+                    Socket.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="viewer.html">
+                    viewer.js
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p> ViewController.swift
+ ArcticViewer</p>
+<p> Created by Tristan on 7/13/15.
+ Copyright (c) 2015 Kitware. All rights reserved.</p>
+
+        
+          <div class='highlight'><pre>
+<span class="hljs-keyword">import</span> <span class="hljs-type">UIKit</span>
+<span class="hljs-keyword">import</span> <span class="hljs-type">WebKit</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TonicViewController</span>: <span class="hljs-title">UIViewController</span>, <span class="hljs-title">WKNavigationDelegate</span> </span>{
+
+    <span class="hljs-preprocessor">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> spinner: <span class="hljs-type">UIActivityIndicatorView</span>!
+
+    <span class="hljs-keyword">var</span> wkWebView: <span class="hljs-type">WKWebView</span>!
+    <span class="hljs-keyword">var</span> server: <span class="hljs-type">HttpServer</span>!
+    <span class="hljs-keyword">var</span> fullscreen:<span class="hljs-type">Bool</span> = <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">var</span> ipText:<span class="hljs-type">String</span> = <span class="hljs-string">""</span>
+    
+    <span class="hljs-keyword">let</span> port:in_port_t = <span class="hljs-number">80</span>
+    <span class="hljs-keyword">let</span> paths:<span class="hljs-type">Paths</span> = <span class="hljs-type">Paths</span>()
+
+    <span class="hljs-keyword">override</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+        <span class="hljs-keyword">super</span>.viewDidLoad()
+
+        <span class="hljs-keyword">self</span>.startServer()
+
+        <span class="hljs-keyword">let</span> screenSize: <span class="hljs-type">CGRect</span> = <span class="hljs-type">UIScreen</span>.mainScreen().bounds
+        <span class="hljs-keyword">let</span> frameRect: <span class="hljs-type">CGRect</span> = <span class="hljs-type">CGRect</span>(x: <span class="hljs-number">0</span>, y: <span class="hljs-number">0</span>, width: screenSize.width, height: screenSize.height)</pre></div>
+        
+      
+        
+        <p>Create url request from local index.html file located in web_content</p>
+
+        
+          <div class='highlight'><pre>        <span class="hljs-keyword">let</span> url: <span class="hljs-type">NSURL</span> = <span class="hljs-type">NSURL</span>(string: <span class="hljs-string">"http://localhost:<span class="hljs-subst">\(<span class="hljs-keyword">self</span>.port)</span>/index.html"</span>)!
+        <span class="hljs-keyword">let</span> requestObj: <span class="hljs-type">NSURLRequest</span> = <span class="hljs-type">NSURLRequest</span>(<span class="hljs-type">URL</span>: url);
+
+        <span class="hljs-keyword">self</span>.wkWebView = <span class="hljs-type">WKWebView</span>(frame: frameRect)
+        <span class="hljs-keyword">self</span>.wkWebView?.loadRequest(requestObj)
+        <span class="hljs-keyword">self</span>.wkWebView?.navigationDelegate = <span class="hljs-keyword">self</span>
+        <span class="hljs-keyword">self</span>.view.insertSubview(<span class="hljs-keyword">self</span>.wkWebView!, belowSubview: <span class="hljs-keyword">self</span>.spinner)</pre></div>
+        
+      
+        
+        <p>set autolayout so the view is always 100% width and 100% height</p>
+
+        
+          <div class='highlight'><pre>        <span class="hljs-keyword">self</span>.wkWebView.setTranslatesAutoresizingMaskIntoConstraints(<span class="hljs-literal">false</span>)
+        <span class="hljs-keyword">let</span> bindings:[<span class="hljs-type">String</span>:<span class="hljs-type">AnyObject</span>] = [<span class="hljs-string">"v1"</span>: <span class="hljs-keyword">self</span>.wkWebView]
+        <span class="hljs-keyword">self</span>.view.addConstraints(<span class="hljs-type">NSLayoutConstraint</span>.constraintsWithVisualFormat(<span class="hljs-string">"H:|-0-[v1]-0-|"</span>, options: <span class="hljs-type">NSLayoutFormatOptions</span>.<span class="hljs-type">AlignAllLeft</span>, metrics: <span class="hljs-literal">nil</span>, views: bindings))
+        <span class="hljs-keyword">self</span>.view.addConstraints(<span class="hljs-type">NSLayoutConstraint</span>.constraintsWithVisualFormat(<span class="hljs-string">"V:|-0-[v1]-0-|"</span>, options: <span class="hljs-type">NSLayoutFormatOptions</span>.<span class="hljs-type">AlignAllTop</span>, metrics: <span class="hljs-literal">nil</span>, views: bindings))</pre></div>
+        
+      
+        
+        <p>always stay on,</p>
+
+        
+          <div class='highlight'><pre>        <span class="hljs-type">UIApplication</span>.sharedApplication().idleTimerDisabled = <span class="hljs-literal">true</span></pre></div>
+        
+      
+        
+        <p>disable ‘swipe to go back’ gesture</p>
+
+        
+          <div class='highlight'><pre>        <span class="hljs-keyword">self</span>.navigationController?.interactivePopGestureRecognizer.enabled = <span class="hljs-literal">false</span></pre></div>
+        
+      
+        
+        <p>check for default fullscreen, if it’s on for the first time or retoggled then an alert is shown.</p>
+
+        
+          <div class='highlight'><pre>        <span class="hljs-keyword">let</span> store:<span class="hljs-type">NSUserDefaults</span> = <span class="hljs-type">NSUserDefaults</span>.standardUserDefaults()
+        <span class="hljs-keyword">self</span>.fullscreen = store.boolForKey(<span class="hljs-string">"fullscreen-viewer"</span>);
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.fullscreen &amp;&amp; !store.boolForKey(<span class="hljs-string">"fullscreen-default-alert"</span>) {
+            <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertView</span>(title: <span class="hljs-string">"Fullscreen By Default"</span>,
+                message: <span class="hljs-string">"This view will initially appear fullscreen by default, shake to show the navigation bar."</span> +
+                <span class="hljs-string">"This setting can be toggled from the Settings app."</span>,
+                delegate: <span class="hljs-literal">nil</span>, cancelButtonTitle: <span class="hljs-string">"Ok"</span>)
+            alert.show()
+            store.setBool(<span class="hljs-literal">true</span>, forKey: <span class="hljs-string">"fullscreen-default-alert"</span>)
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> !store.boolForKey(<span class="hljs-string">"fullscreen-default-alert"</span>) {
+            store.setBool(<span class="hljs-literal">false</span>, forKey: <span class="hljs-string">"fullscreen-default-alert"</span>)
+        }
+        store.synchronize()</pre></div>
+        
+      
+        
+        <p>show a action button if the wifi is available.</p>
+
+        
+          <div class='highlight'><pre>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> ip:<span class="hljs-type">String</span> = <span class="hljs-keyword">self</span>.getWifiIP() {
+            <span class="hljs-keyword">self</span>.ipText = <span class="hljs-string">"A server is running at:\n<span class="hljs-subst">\(ip)</span>"</span> + (<span class="hljs-keyword">self</span>.port == <span class="hljs-number">80</span> ? <span class="hljs-string">"/"</span> : <span class="hljs-string">":<span class="hljs-subst">\(<span class="hljs-keyword">self</span>.port)</span>/"</span>)
+            <span class="hljs-keyword">let</span> btnReload:<span class="hljs-type">UIBarButtonItem</span> = <span class="hljs-type">UIBarButtonItem</span>(barButtonSystemItem: <span class="hljs-type">UIBarButtonSystemItem</span>.<span class="hljs-type">Action</span>, target: <span class="hljs-keyword">self</span>, action: <span class="hljs-type">Selector</span>(<span class="hljs-string">"showIpAlert"</span>))
+            <span class="hljs-keyword">self</span>.navigationController?.topViewController.navigationItem.rightBarButtonItem = btnReload
+            btnReload.enabled = <span class="hljs-literal">true</span>
+        }
+    }
+
+    <span class="hljs-keyword">override</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">viewWillAppear</span><span class="hljs-params">(animated: Bool)</span></span> {
+        <span class="hljs-keyword">super</span>.viewWillAppear(animated)
+        <span class="hljs-keyword">self</span>.navigationController?.setNavigationBarHidden(<span class="hljs-keyword">self</span>.fullscreen, animated: <span class="hljs-literal">false</span>)
+    }
+
+    <span class="hljs-keyword">override</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">viewWillDisappear</span><span class="hljs-params">(animated: Bool)</span></span> {
+        <span class="hljs-keyword">super</span>.viewWillDisappear(animated)
+        <span class="hljs-type">UIApplication</span>.sharedApplication().idleTimerDisabled = <span class="hljs-literal">false</span>
+        <span class="hljs-keyword">self</span>.navigationController?.interactivePopGestureRecognizer.enabled = <span class="hljs-literal">true</span>
+    }
+
+    <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">getWifiIP</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">String</span>? {
+        <span class="hljs-keyword">var</span> address:<span class="hljs-type">String</span>?</pre></div>
+        
+      
+        
+        <p>Get list of all interfaces on the local machine:</p>
+
+        
+          <div class='highlight'><pre>        <span class="hljs-keyword">var</span> ifaddr:<span class="hljs-type">UnsafeMutablePointer</span>&lt;ifaddrs&gt; = <span class="hljs-literal">nil</span>
+        <span class="hljs-keyword">if</span> getifaddrs(&amp;ifaddr) == <span class="hljs-number">0</span> {</pre></div>
+        
+      
+        
+        <p>For each interface …</p>
+
+        
+          <div class='highlight'><pre>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> ptr = ifaddr; ptr != <span class="hljs-literal">nil</span>; ptr = ptr.memory.ifa_next) {
+                <span class="hljs-keyword">let</span> interface = ptr.memory</pre></div>
+        
+      
+        
+        <p>Check only IPv4 interfaces //or IPv6 interface:</p>
+
+        
+          <div class='highlight'><pre>                <span class="hljs-keyword">let</span> addrFamily = interface.ifa_addr.memory.sa_family
+                <span class="hljs-keyword">if</span> addrFamily == <span class="hljs-type">UInt8</span>(<span class="hljs-type">AF_INET</span>) { <span class="hljs-comment">//|| addrFamily == UInt8(AF_INET6) {</span></pre></div>
+        
+      
+        
+        <p>Check interface name:</p>
+
+        
+          <div class='highlight'><pre>                    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> name = <span class="hljs-type">String</span>.fromCString(interface.ifa_name) <span class="hljs-keyword">where</span> name == <span class="hljs-string">"en0"</span> {</pre></div>
+        
+      
+        
+        <p>Convert interface address to a human readable string:</p>
+
+        
+          <div class='highlight'><pre>                        <span class="hljs-keyword">var</span> addr = interface.ifa_addr.memory
+                        <span class="hljs-keyword">var</span> hostname = [<span class="hljs-type">CChar</span>](<span class="hljs-built_in">count</span>: <span class="hljs-type">Int</span>(<span class="hljs-type">NI_MAXHOST</span>), repeatedValue: <span class="hljs-number">0</span>)
+                        getnameinfo(&amp;addr, socklen_t(interface.ifa_addr.memory.sa_len),
+                            &amp;hostname, socklen_t(hostname.<span class="hljs-built_in">count</span>),
+                            <span class="hljs-literal">nil</span>, socklen_t(<span class="hljs-number">0</span>), <span class="hljs-type">NI_NUMERICHOST</span>)
+                        address = <span class="hljs-type">String</span>.fromCString(hostname)
+                    }
+                }
+            }
+            freeifaddrs(ifaddr)
+        }
+
+        <span class="hljs-keyword">return</span> address
+    }
+
+    <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">showIpAlert</span><span class="hljs-params">()</span></span> {
+        <span class="hljs-keyword">let</span> alert:<span class="hljs-type">UIAlertView</span> = <span class="hljs-type">UIAlertView</span>(title: <span class="hljs-string">"Server IP"</span>, message: <span class="hljs-keyword">self</span>.ipText, delegate: <span class="hljs-literal">nil</span>, cancelButtonTitle: <span class="hljs-string">"OK"</span>)
+        alert.show()
+    }</pre></div>
+        
+      
+        
+        <p>shake motion to go fullscreen</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">override</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">motionEnded</span><span class="hljs-params">(motion: UIEventSubtype, withEvent event: UIEvent)</span></span> {
+        <span class="hljs-keyword">if</span> motion == <span class="hljs-type">UIEventSubtype</span>.<span class="hljs-type">MotionShake</span> {
+            <span class="hljs-keyword">self</span>.fullscreen = !<span class="hljs-keyword">self</span>.fullscreen;
+            <span class="hljs-keyword">self</span>.navigationController?.setNavigationBarHidden(<span class="hljs-keyword">self</span>.fullscreen, animated: <span class="hljs-literal">true</span>)
+            <span class="hljs-keyword">self</span>.setNeedsStatusBarAppearanceUpdate()
+
+            <span class="hljs-keyword">let</span> store:<span class="hljs-type">NSUserDefaults</span> = <span class="hljs-type">NSUserDefaults</span>.standardUserDefaults()
+            <span class="hljs-keyword">let</span> times:<span class="hljs-type">Int</span> = store.integerForKey(<span class="hljs-string">"fullscreen-alert-times"</span>)
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.fullscreen &amp;&amp; !store.boolForKey(<span class="hljs-string">"fullscreen-viewer"</span>) &amp;&amp; times &lt; <span class="hljs-number">3</span> {
+                <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertView</span>(title: <span class="hljs-string">"Fullscreen activated"</span>,
+                    message: <span class="hljs-string">"A shaking motion toggles fullscreen, shake to undo. Fullscreen can be set to default from the Settings app."</span>,
+                    delegate: <span class="hljs-literal">nil</span>, cancelButtonTitle: <span class="hljs-string">"OK"</span>)
+                alert.show()
+
+                store.setInteger(times + <span class="hljs-number">1</span>, forKey: <span class="hljs-string">"fullscreen-alert-times"</span>)
+                store.synchronize()
+            }
+        }
+    }
+
+    <span class="hljs-keyword">override</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">prefersStatusBarHidden</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">Bool</span> {
+        <span class="hljs-keyword">return</span> fullscreen
+    }</pre></div>
+        
+      
+        
+        <p>there is a spinner that shows before the WebView is ready.</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">webView</span><span class="hljs-params">(webView: WKWebView, didFinishNavigation navigation: WKNavigation!)</span></span> {
+        <span class="hljs-keyword">self</span>.spinner.stopAnimating()
+    }
+
+    <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">startServer</span><span class="hljs-params">()</span></span> {
+        <span class="hljs-keyword">let</span> serverPath:<span class="hljs-type">String</span> = <span class="hljs-keyword">self</span>.paths.webcontentDirectory().absoluteString!
+        <span class="hljs-keyword">let</span> server = demoServer(serverPath)
+        <span class="hljs-keyword">self</span>.server = server
+        <span class="hljs-keyword">var</span> error: <span class="hljs-type">NSError</span>?
+        <span class="hljs-keyword">if</span> !server.start(listenPort: <span class="hljs-keyword">self</span>.port, error: &amp;error) {
+            <span class="hljs-built_in">println</span>(<span class="hljs-string">"Server start error: <span class="hljs-subst">\(error)</span>"</span>)
+        }
+    }
+
+    <span class="hljs-keyword">override</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">didReceiveMemoryWarning</span><span class="hljs-params">()</span></span> {
+        <span class="hljs-keyword">super</span>.didReceiveMemoryWarning()</pre></div>
+        
+      
+        
+        <p>Dispose of any resources that can be recreated.</p>
+
+        
+          <div class='highlight'><pre>    }
+
+    <span class="hljs-keyword">deinit</span> {
+        server.stop();
+    }
+}</pre></div>
+        
+      
+    </div>
+  </div>
+</body>
+</html>

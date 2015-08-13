@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Arctic Viewer</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="/arctic-viewer/css/main.css">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+<header class="site-header">
+
+    <nav class="mobile-nav show-on-mobiles">
+        <a class="page-link" href="/arctic-viewer/"><i class="fa fa-home fa-fw fa-lg"></i></a>
+        <a class="page-link" href="/arctic-viewer/docs/home"><i class="fa fa-book fa-fw fa-lg"></i></a>
+        <a class="page-link" href="/arctic-viewer/news"><i class="fa fa-newspaper-o fa-fw fa-lg"></i></a>
+    </nav>
+    <div class="wrapper">
+
+        <a class="site-title center-on-mobiles" href="/">
+            <img src="/arctic-viewer/img/logo.png" height="40" alt="Logo">
+            Arctic Viewer
+        </a>
+        <nav class="site-nav hide-on-mobiles">
+            <a href="#" class="menu-icon">
+                <svg viewBox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+                </svg>
+            </a>
+            <div class="trigger">
+                <a class="page-link" href="/arctic-viewer/">Home</a>
+                <a class="page-link" href="/arctic-viewer/docs/home">Docs</a>
+                <a class="page-link" href="/arctic-viewer/news">News</a>
+            </div>
+        </nav>
+    </div>
+
+</header>
+
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>HttpHandlers.swift</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="MainViewController.html">
+                    MainViewController.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="MainViewTableCell.html">
+                    MainViewTableCell.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="ObjCBridge.html">
+                    ObjCBridge.h
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="Paths.html">
+                    Paths.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="TonicViewController.html">
+                    TonicViewController.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="DemoServer.html">
+                    DemoServer.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpHandlers.html">
+                    HttpHandlers.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpParser.html">
+                    HttpParser.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpRequest.html">
+                    HttpRequest.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpResponse.html">
+                    HttpResponse.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpServer.html">
+                    HttpServer.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="Socket.html">
+                    Socket.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="viewer.html">
+                    viewer.js
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p> Handlers.swift
+ Swifter
+ Copyright (c) 2014 Damian Kołakowski. All rights reserved.</p>
+
+        
+          <div class='highlight'><pre>
+<span class="hljs-keyword">import</span> <span class="hljs-type">Foundation</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HttpHandlers</span> </span>{
+
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">directory</span>(<span class="hljs-title">dir</span>: <span class="hljs-title">String</span>) -&gt; ( <span class="hljs-title">HttpRequest</span> -&gt; <span class="hljs-title">HttpResponse</span> ) </span>{
+        <span class="hljs-keyword">return</span> { request <span class="hljs-keyword">in</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> localPath = request.capturedUrlGroups.first {
+                <span class="hljs-keyword">let</span> filesPath = dir.stringByExpandingTildeInPath.stringByAppendingPathComponent(localPath)
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> fileBody = <span class="hljs-type">NSData</span>(contentsOfFile: filesPath) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-type">HttpResponse</span>.<span class="hljs-type">RAW</span>(<span class="hljs-number">200</span>, fileBody)
+                }
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-type">HttpResponse</span>.<span class="hljs-type">NotFound</span>
+        }
+    }
+
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">directoryBrowser</span>(<span class="hljs-title">dir</span>: <span class="hljs-title">String</span>) -&gt; ( <span class="hljs-title">HttpRequest</span> -&gt; <span class="hljs-title">HttpResponse</span> ) </span>{
+        <span class="hljs-keyword">return</span> { request <span class="hljs-keyword">in</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> pathFromUrl = request.capturedUrlGroups.first {
+                <span class="hljs-keyword">let</span> filePath = dir.stringByExpandingTildeInPath.stringByAppendingPathComponent(pathFromUrl)
+                <span class="hljs-keyword">let</span> fileManager = <span class="hljs-type">NSFileManager</span>.defaultManager()
+                <span class="hljs-keyword">var</span> isDir: <span class="hljs-type">ObjCBool</span> = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> ( fileManager.fileExistsAtPath(filePath, isDirectory: &amp;isDir) ) {
+                    <span class="hljs-keyword">if</span> ( isDir ) {
+                        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> files = fileManager.contentsOfDirectoryAtPath(filePath, error: <span class="hljs-literal">nil</span>) {
+                            <span class="hljs-keyword">var</span> response = <span class="hljs-string">"&lt;h3&gt;<span class="hljs-subst">\(filePath)</span>&lt;/h3&gt;&lt;/br&gt;&lt;table&gt;"</span>
+                            response += <span class="hljs-built_in">join</span>(<span class="hljs-string">""</span>, <span class="hljs-built_in">map</span>(files, { <span class="hljs-string">"&lt;tr&gt;&lt;td&gt;&lt;a href=\"<span class="hljs-subst">\(request.url)</span>/<span class="hljs-subst">\($<span class="hljs-number">0</span>)</span>\"&gt;<span class="hljs-subst">\($<span class="hljs-number">0</span>)</span>&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;"</span>}))
+                            response += <span class="hljs-string">"&lt;/table&gt;"</span>
+                            <span class="hljs-keyword">return</span> <span class="hljs-type">HttpResponse</span>.<span class="hljs-type">OK</span>(.<span class="hljs-type">HTML</span>(response))
+                        }
+                    } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> fileBody = <span class="hljs-type">NSData</span>(contentsOfFile: filePath) {
+                            <span class="hljs-keyword">return</span> <span class="hljs-type">HttpResponse</span>.<span class="hljs-type">RAW</span>(<span class="hljs-number">200</span>, fileBody)
+                        }
+                    }
+                }
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-type">HttpResponse</span>.<span class="hljs-type">NotFound</span>
+        }
+    }
+}</pre></div>
+        
+      
+    </div>
+  </div>
+</body>
+</html>

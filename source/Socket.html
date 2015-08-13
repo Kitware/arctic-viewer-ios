@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Arctic Viewer</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="/arctic-viewer/css/main.css">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+<header class="site-header">
+
+    <nav class="mobile-nav show-on-mobiles">
+        <a class="page-link" href="/arctic-viewer/"><i class="fa fa-home fa-fw fa-lg"></i></a>
+        <a class="page-link" href="/arctic-viewer/docs/home"><i class="fa fa-book fa-fw fa-lg"></i></a>
+        <a class="page-link" href="/arctic-viewer/news"><i class="fa fa-newspaper-o fa-fw fa-lg"></i></a>
+    </nav>
+    <div class="wrapper">
+
+        <a class="site-title center-on-mobiles" href="/">
+            <img src="/arctic-viewer/img/logo.png" height="40" alt="Logo">
+            Arctic Viewer
+        </a>
+        <nav class="site-nav hide-on-mobiles">
+            <a href="#" class="menu-icon">
+                <svg viewBox="0 0 18 15">
+                    <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+                    <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+                    <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+                </svg>
+            </a>
+            <div class="trigger">
+                <a class="page-link" href="/arctic-viewer/">Home</a>
+                <a class="page-link" href="/arctic-viewer/docs/home">Docs</a>
+                <a class="page-link" href="/arctic-viewer/news">News</a>
+            </div>
+        </nav>
+    </div>
+
+</header>
+
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>Socket.swift</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="MainViewController.html">
+                    MainViewController.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="MainViewTableCell.html">
+                    MainViewTableCell.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="ObjCBridge.html">
+                    ObjCBridge.h
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="Paths.html">
+                    Paths.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="TonicViewController.html">
+                    TonicViewController.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="DemoServer.html">
+                    DemoServer.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpHandlers.html">
+                    HttpHandlers.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpParser.html">
+                    HttpParser.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpRequest.html">
+                    HttpRequest.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpResponse.html">
+                    HttpResponse.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="HttpServer.html">
+                    HttpServer.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="Socket.html">
+                    Socket.swift
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="viewer.html">
+                    viewer.js
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p> Socket.swift
+ Swifter
+ Copyright (c) 2014 Damian Kołakowski. All rights reserved.</p>
+
+        
+          <div class='highlight'><pre>
+<span class="hljs-keyword">import</span> <span class="hljs-type">Foundation</span>
+
+<span class="hljs-comment">/* Low level routines for POSIX sockets */</span>
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Socket</span> </span>{
+        
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">lastErr</span><span class="hljs-params">(reason: String)</span></span> -&gt; <span class="hljs-type">NSError</span> {
+        <span class="hljs-keyword">let</span> errorCode = errno
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> errorText = <span class="hljs-type">String</span>.fromCString(<span class="hljs-type">UnsafePointer</span>(strerror(errorCode))) {
+            <span class="hljs-keyword">return</span> <span class="hljs-type">NSError</span>(domain: <span class="hljs-string">"SOCKET"</span>, code: <span class="hljs-type">Int</span>(errorCode), userInfo: [<span class="hljs-type">NSLocalizedFailureReasonErrorKey</span> : reason, <span class="hljs-type">NSLocalizedDescriptionKey</span> : errorText])
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-type">NSError</span>(domain: <span class="hljs-string">"SOCKET"</span>, code: <span class="hljs-type">Int</span>(errorCode), userInfo: <span class="hljs-literal">nil</span>)
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">tcpForListen</span><span class="hljs-params">(port: in_port_t = <span class="hljs-number">8080</span>, error: NSErrorPointer = <span class="hljs-literal">nil</span>)</span></span> -&gt; <span class="hljs-type">CInt</span>? {
+        <span class="hljs-keyword">let</span> s = socket(<span class="hljs-type">AF_INET</span>, <span class="hljs-type">SOCK_STREAM</span>, <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">if</span> ( s == -<span class="hljs-number">1</span> ) {
+            <span class="hljs-keyword">if</span> error != <span class="hljs-literal">nil</span> { error.memory = lastErr(<span class="hljs-string">"socket(...) failed."</span>) }
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+        }
+        <span class="hljs-keyword">var</span> value: <span class="hljs-type">Int32</span> = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> ( setsockopt(s, <span class="hljs-type">SOL_SOCKET</span>, <span class="hljs-type">SO_REUSEADDR</span>, &amp;value, socklen_t(<span class="hljs-built_in">sizeof</span>(<span class="hljs-type">Int32</span>))) == -<span class="hljs-number">1</span> ) {
+            release(s)
+            <span class="hljs-keyword">if</span> error != <span class="hljs-literal">nil</span> { error.memory = lastErr(<span class="hljs-string">"setsockopt(...) failed."</span>) }
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+        }
+        nosigpipe(s)
+        <span class="hljs-keyword">var</span> addr = sockaddr_in(sin_len: __uint8_t(<span class="hljs-built_in">sizeof</span>(sockaddr_in)), sin_family: sa_family_t(<span class="hljs-type">AF_INET</span>),
+            sin_port: port_htons(port), sin_addr: in_addr(s_addr: inet_addr(<span class="hljs-string">"0.0.0.0"</span>)), sin_zero: (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>))
+        
+        <span class="hljs-keyword">var</span> sock_addr = sockaddr(sa_len: <span class="hljs-number">0</span>, sa_family: <span class="hljs-number">0</span>, sa_data: (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>))
+        memcpy(&amp;sock_addr, &amp;addr, <span class="hljs-type">Int</span>(<span class="hljs-built_in">sizeof</span>(sockaddr_in)))
+        <span class="hljs-keyword">if</span> ( bind(s, &amp;sock_addr, socklen_t(<span class="hljs-built_in">sizeof</span>(sockaddr_in))) == -<span class="hljs-number">1</span> ) {
+            release(s)
+            <span class="hljs-keyword">if</span> error != <span class="hljs-literal">nil</span> { error.memory = lastErr(<span class="hljs-string">"bind(...) failed."</span>) }
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+        }
+        <span class="hljs-keyword">if</span> ( listen(s, <span class="hljs-number">20</span> <span class="hljs-comment">/* max pending connection */</span> ) == -<span class="hljs-number">1</span> ) {
+            release(s)
+            <span class="hljs-keyword">if</span> error != <span class="hljs-literal">nil</span> { error.memory = lastErr(<span class="hljs-string">"listen(...) failed."</span>) }
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+        }
+        <span class="hljs-keyword">return</span> s
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">writeUTF8</span><span class="hljs-params">(socket: CInt, string: String, error: NSErrorPointer = <span class="hljs-literal">nil</span>)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> nsdata = string.dataUsingEncoding(<span class="hljs-type">NSUTF8StringEncoding</span>) {
+            <span class="hljs-keyword">return</span> writeData(socket, data: nsdata, error: error)
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">writeASCII</span><span class="hljs-params">(socket: CInt, string: String, error: NSErrorPointer = <span class="hljs-literal">nil</span>)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> nsdata = string.dataUsingEncoding(<span class="hljs-type">NSASCIIStringEncoding</span>) {
+            <span class="hljs-keyword">return</span> writeData(socket, data: nsdata, error: error)
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">writeData</span><span class="hljs-params">(socket: CInt, data: NSData, error: NSErrorPointer = <span class="hljs-literal">nil</span>)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+        <span class="hljs-keyword">var</span> sent = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">let</span> unsafePointer = <span class="hljs-type">UnsafePointer</span>&lt;<span class="hljs-type">UInt8</span>&gt;(data.bytes)
+        <span class="hljs-keyword">while</span> ( sent &lt; data.length ) {
+            <span class="hljs-keyword">let</span> s = write(socket, unsafePointer + sent, <span class="hljs-type">Int</span>(data.length - sent))
+            <span class="hljs-keyword">if</span> ( s &lt;= <span class="hljs-number">0</span> ) {
+                <span class="hljs-keyword">if</span> error != <span class="hljs-literal">nil</span> { error.memory = lastErr(<span class="hljs-string">"write(...) failed."</span>) }
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+            }
+            sent += s
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">acceptClientSocket</span><span class="hljs-params">(socket: CInt, error:NSErrorPointer = <span class="hljs-literal">nil</span>)</span></span> -&gt; <span class="hljs-type">CInt</span>? {
+        <span class="hljs-keyword">var</span> addr = sockaddr(sa_len: <span class="hljs-number">0</span>, sa_family: <span class="hljs-number">0</span>, sa_data: (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)), len: socklen_t = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">let</span> clientSocket = accept(socket, &amp;addr, &amp;len)
+        <span class="hljs-keyword">if</span> ( clientSocket != -<span class="hljs-number">1</span> ) {
+            <span class="hljs-type">Socket</span>.nosigpipe(clientSocket)
+            <span class="hljs-keyword">return</span> clientSocket
+        }
+        <span class="hljs-keyword">if</span> error != <span class="hljs-literal">nil</span> { error.memory = lastErr(<span class="hljs-string">"accept(...) failed."</span>) }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">nosigpipe</span><span class="hljs-params">(socket: CInt)</span></span> {</pre></div>
+        
+      
+        
+        <p>prevents crashes when blocking calls are pending and the app is paused ( via Home button )</p>
+
+        
+          <div class='highlight'><pre>        <span class="hljs-keyword">var</span> no_sig_pipe: <span class="hljs-type">Int32</span> = <span class="hljs-number">1</span>;
+        setsockopt(socket, <span class="hljs-type">SOL_SOCKET</span>, <span class="hljs-type">SO_NOSIGPIPE</span>, &amp;no_sig_pipe, socklen_t(<span class="hljs-built_in">sizeof</span>(<span class="hljs-type">Int32</span>)));
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">port_htons</span><span class="hljs-params">(port: in_port_t)</span></span> -&gt; in_port_t {
+        <span class="hljs-keyword">let</span> isLittleEndian = <span class="hljs-type">Int</span>(<span class="hljs-type">OSHostByteOrder</span>()) == <span class="hljs-type">OSLittleEndian</span>
+        <span class="hljs-keyword">return</span> isLittleEndian ? _OSSwapInt16(port) : port
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">release</span><span class="hljs-params">(socket: CInt)</span></span> {
+        shutdown(socket, <span class="hljs-type">SHUT_RDWR</span>)
+        close(socket)
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">peername</span><span class="hljs-params">(socket: CInt, error: NSErrorPointer = <span class="hljs-literal">nil</span>)</span></span> -&gt; <span class="hljs-type">String</span>? {
+        <span class="hljs-keyword">var</span> addr = sockaddr(), len: socklen_t = socklen_t(<span class="hljs-built_in">sizeof</span>(sockaddr))
+        <span class="hljs-keyword">if</span> getpeername(socket, &amp;addr, &amp;len) != <span class="hljs-number">0</span> {
+            <span class="hljs-keyword">if</span> error != <span class="hljs-literal">nil</span> { error.memory = lastErr(<span class="hljs-string">"getpeername(...) failed."</span>) }
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+        }
+        <span class="hljs-keyword">var</span> hostBuffer = [<span class="hljs-type">CChar</span>](<span class="hljs-built_in">count</span>: <span class="hljs-type">Int</span>(<span class="hljs-type">NI_MAXHOST</span>), repeatedValue: <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">if</span> getnameinfo(&amp;addr, len, &amp;hostBuffer, socklen_t(hostBuffer.<span class="hljs-built_in">count</span>), <span class="hljs-literal">nil</span>, <span class="hljs-number">0</span>, <span class="hljs-type">NI_NUMERICHOST</span>) != <span class="hljs-number">0</span> {
+            <span class="hljs-keyword">if</span> error != <span class="hljs-literal">nil</span> { error.memory = lastErr(<span class="hljs-string">"getnameinfo(...) failed."</span>) }
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-type">String</span>.fromCString(hostBuffer)
+    }
+}</pre></div>
+        
+      
+    </div>
+  </div>
+</body>
+</html>
