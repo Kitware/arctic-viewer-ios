@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>Licenses</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Arctic Viewer</string>
+			<key>File</key>
+			<string>ArcticViewer</string>
+		</dict>
+        <dict>
+            <key>Type</key>
+            <string>PSChildPaneSpecifier</string>
+            <key>Title</key>
+            <string>NVHTarGzip</string>
+            <key>File</key>
+            <string>NVHTarGzip</string>
+        </dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>SDWebImage</string>
+			<key>File</key>
+			<string>SDWebImage</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>SSZipArchive</string>
+			<key>File</key>
+			<string>SSZipArchive</string>
+		</dict>
+        <dict>
+            <key>Type</key>
+            <string>PSChildPaneSpecifier</string>
+            <key>Title</key>
+            <string>swifter</string>
+            <key>File</key>
+            <string>swifter</string>
+        </dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,11 @@
+- title: Getting Started
+  docs:
+  - home
+  - gallery
+
+- title: Usage
+  docs:
+    - MainMenu
+    - Download
+    - Explore
+    - Update

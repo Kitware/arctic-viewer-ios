@@ -1,0 +1,14 @@
+{
+  "name": "arctic-viewer",
+  "version": "1.0.0",
+  "description": "Website generatror for native Arctic-Viewer",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "www": "tonic-site-generator site.config.js",
+    "www:http": "tonic-site-generator site.config.js --local-test && serve docs/www"
+  },
+  "devDependencies": {
+    "serve": "^1.4.0",
+    "tonic-site-generator": "Kitware/tonic-site-generator"
+  }
+}
