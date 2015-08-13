@@ -15,7 +15,7 @@ The file formats that Arctic viewer supports are .tar, .tar.gz, .tgz,
 cancel button. While downloading and while this page is open, the device will
 indefinitely stay on however you may navigate to other pages if you wish.
 
-<img src="/docs/download-md.png" width="250px" alt="download screen">
+<img src="{{site.baseurl}}/docs/download-md.png" width="250px" alt="download screen">
 
 A tag on the top right corner of a dataset means that it's already
 on the device, but there's nothing stopping you from
@@ -43,4 +43,4 @@ dataset size it may take some time before it appears in the list. Press sync
 and the datasets will be transfered. If the dataset is compressed
 it will deflate it when Arctic Viewer starts up.
 
-<img src="/docs/iTunes.png" width="90%" alt="iTunes file add screen">
+<img src="{{site.baseurl}}/docs/itunes.png" width="90%" alt="iTunes file add screen">

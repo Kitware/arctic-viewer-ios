@@ -12,7 +12,7 @@ to it from another computer or device that is also on the same netowrk.
 The address for this server is available from the action button in
 the navigation bar.
 
-<img src="/docs/viewer-md.png" width="250px" alt="explore view">
+<img src="{{site.baseurl}}/docs/viewer-md.png" width="250px" alt="explore view">
 
 ## Fullscreen
 
@@ -20,4 +20,4 @@ Quickly shaking the device twice will toggle a fullscreen view. Fullscreen is
 off by default. In Arctic Viewer's settings page in the Settings app, there's
 a switch which enables fullscreen on by default.
 
-<img src="/docs/viewer-fullscreen-00.png" width="250px" alt="fullscreen explore view">
+<img src="{{site.baseurl}}/docs/viewer-fullscreen-00.png" width="250px" alt="fullscreen explore view">

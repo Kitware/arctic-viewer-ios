@@ -15,4 +15,4 @@ Tapping on a dataset in the list will bring you to the
 <a href="/docs/Explore">Explore page</a>.
 To delete a dataset, swipe left and tap delete.
 
-<img src="/docs/menu-md.png" width="250px" alt="explore view">
+<img src="{{site.baseurl}}/docs/menu-md.png" width="250px" alt="explore view">
