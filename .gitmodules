@@ -1,0 +1,4 @@
+[submodule "docs/www"]
+	path = docs/www
+	url = https://github.com/Kitware/arctic-viewer-ios.git
+	branch = gh-pages
