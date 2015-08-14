@@ -50,7 +50,7 @@ class AboutViewController: UIViewController,
 
     // MARK: Fetching
     func fetchVersions() {
-        let URL:NSURL = NSURL(string: "https://api.github.com/repos/Kitware/in-situ-data-viewer/tags")!
+        let URL:NSURL = NSURL(string: "https://api.github.com/repos/Kitware/arctic-viewer/tags")!
         let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
         let request:NSMutableURLRequest = NSMutableURLRequest(URL:URL)
@@ -138,7 +138,7 @@ class AboutViewController: UIViewController,
         if self.pickerOpen {
             self.hidePickerView(Int())
         }
-        
+
         self.downloadButton.hidden = true
         let spinner:UIActivityIndicatorView = UIActivityIndicatorView()
         spinner.color = UIColor(red: 0.209, green: 0.596, blue: 0.858, alpha: 1)
@@ -146,7 +146,7 @@ class AboutViewController: UIViewController,
         self.view.addSubview(spinner)
         spinner.startAnimating()
 
-        let URL:NSURL = NSURL(string: "https://github.com/Kitware/in-situ-data-viewer/archive/\(self.versionInput.text).tar.gz")!
+        let URL:NSURL = NSURL(string: "https://github.com/Kitware/arctic-viewer/archive/\(self.versionInput.text).tar.gz")!
         let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
         let request:NSMutableURLRequest = NSMutableURLRequest(URL:URL)
@@ -161,7 +161,7 @@ class AboutViewController: UIViewController,
                     })
                     return
                 }
-                
+
                 // deflate download.
                 let manager:NSFileManager = NSFileManager.defaultManager()
                 let sourceTgzPath:NSURL = Paths().tmpDirectory().URLByAppendingPathComponent("\(self.versionInput.text).tar.gz")
@@ -178,7 +178,7 @@ class AboutViewController: UIViewController,
                 if self.versionInput.text != "master" {
                     trueVersion = self.versionInput.text.substringFromIndex(self.versionInput.text.startIndex.successor())
                 }
-                let versionDirectory:String = Paths().tmpDirectory().URLByAppendingPathComponent("in-situ-data-viewer-\(trueVersion)").path!
+                let versionDirectory:String = Paths().tmpDirectory().URLByAppendingPathComponent("arctic-viewer-\(trueVersion)").path!
                 let distDirectory:String = versionDirectory + "/dist/"
                 let files:[AnyObject] = manager.contentsOfDirectoryAtPath(distDirectory, error: nil)!
                 for file:String in files as! [String] {

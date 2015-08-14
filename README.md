@@ -1,10 +1,11 @@
 # Arctic Viewer
 
-A native iOS wrapper and data manager for [Tonic In Situ Data Viewer](https://github.com/Kitware/in-situ-data-viewer). For iPad and iPhone, requires at least iOS 8.
+A native iOS wrapper and data manager for [Tonic Arctic Viewer](https://github.com/Kitware/arctic-viewer).
+For iPad and iPhone, requires at least iOS 8.
 
 ## Setup
 
-The project depends on three [CocoaPods](https://cocoapods.org/) which are marked in the `Podfile`. 
+The project depends on three [CocoaPods](https://cocoapods.org/) which are marked in the `Podfile`.
 
 ```
 $ git clone https://github.com/Kitware/Arctic-Viewer.git
