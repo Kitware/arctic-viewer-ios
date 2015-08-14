@@ -18,7 +18,7 @@ Clone, install, and open with:
 $ git clone https://github.com/{{ site.repository }}.git
 $ cd .{{ site.baseurl }}
 $ pod install
-$ open -a XCode Tonic-Native.xcworkspace
+$ open -a XCode ArcticViewer.xcworkspace
 ```
 
 XCode will open, try running the project on a simulator first, simply press
