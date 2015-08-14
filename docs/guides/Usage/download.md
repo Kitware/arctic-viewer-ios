@@ -2,6 +2,10 @@
 layout: docs
 title: Download Datasets
 permalink: /docs/Download/
+
+prev_section: MainMenu
+next_section: Explore
+repo_path: /docs/guides/Usage/download.md
 ---
 
 ## Download from App
@@ -15,12 +19,14 @@ The file formats that Arctic viewer supports are .tar, .tar.gz, .tgz,
 cancel button. While downloading and while this page is open, the device will
 indefinitely stay on however you may navigate to other pages if you wish.
 
-<img src="{{site.baseurl}}/docs/download-md.png" width="250px" alt="download screen">
+<p style="text-align: center;">
+<img src="{{site.baseurl}}/docs/download-md.png" width="250px" alt="download screen" style="border: solid 1px; border-radius: 5px;">
+</p>
 
 A tag on the top right corner of a dataset means that it's already
 on the device, but there's nothing stopping you from
-redownloading it. Tapping on a sample dataset will supplement the url in
-the input bar with a dataset title and its filesize.
+re-downloading it. Tapping on a sample dataset will supplement the url in
+the input bar with a dataset title and its file size.
 
 ## Download from Web
 
@@ -43,4 +49,6 @@ dataset size it may take some time before it appears in the list. Press sync
 and the datasets will be transfered. If the dataset is compressed
 it will deflate it when Arctic Viewer starts up.
 
-<img src="{{site.baseurl}}/docs/itunes.png" width="90%" alt="iTunes file add screen">
+<p style="text-align: center;">
+<img src="{{site.baseurl}}/docs/itunes.png" width="90%" alt="iTunes file add screen" style="border: solid 1px; border-radius: 5px;">
+</p>
