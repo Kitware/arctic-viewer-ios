@@ -1,15 +1,15 @@
 # Arctic Viewer
 
 A native iOS wrapper and data manager for [Tonic Arctic Viewer](https://github.com/Kitware/arctic-viewer).
-For iPad and iPhone, requires at least iOS 8.
+For iPhone and iPad, requires iOS 8 or newer.
 
 ## Setup
 
 The project depends on three [CocoaPods](https://cocoapods.org/) which are marked in the `Podfile`.
 
 ```
-$ git clone https://github.com/Kitware/Arctic-Viewer.git
-$ cd Arctic-Viewer
+$ git clone https://github.com/Kitware/arctic-viewer-ios.git 
+$ cd arctic-viewer
 $ pod install
 $ open -a XCode ArcticViewer.xcworkspace
 ```
