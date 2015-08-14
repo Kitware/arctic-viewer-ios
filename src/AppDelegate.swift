@@ -26,14 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "data-folder-sizes": [String:String](),
             "data-folder-thumbs": [String:String](),
 
-            "arctic-web-version": "v0.2.3",
-            "arctic-web-tags:": ["v0.2.3"],
+            "arctic-web-version": "v0.0.3",
+            "arctic-web-tags:": ["v0.0.3"],
 
             "fullscreen-viewer": false,
             "fullscreen-default-alert": false,
-            "fullscreen-alert-times": 0,
-
-            "new-in-inbox": ""
+            "fullscreen-alert-times": 0
             ]);
 
         // folder setup, only do this once

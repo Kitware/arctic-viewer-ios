@@ -6,6 +6,8 @@ For iPhone and iPad, requires iOS 8 or newer.
 ## Setup
 
 The project depends on three [CocoaPods](https://cocoapods.org/) which are marked in the `Podfile`.
+You can quickly install CocoaPods with `$ sudo gem install cocoapods`.
+
 
 ```
 $ git clone https://github.com/Kitware/arctic-viewer-ios.git 
