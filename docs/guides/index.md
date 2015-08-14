@@ -22,7 +22,7 @@ layout: default
 {% highlight bash %}
 $ git clone https://github.com/{{ site.repository }}.git
 {% endhighlight %}
-        <p>See the <a href="/docs/home">Setup guide</a> for full instructions.</p>
+        <p>See the <a href="{{site.baseurl}}/docs/home">Setup guide</a> for full instructions.</p>
 
         <h2>Quick-start</h2>
         <p>For the impatient, the app is also available in the <a href="#">App Store</a>.</p>
