@@ -17,8 +17,13 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
     var server: HttpServer!
     var fullscreen:Bool = false
     var ipText:String = ""
+
+    #if arch(i386) || arch(x86_64)
+        let port:in_port_t = 8080
+    #else
+        let port:in_port_t = 80
+    #endif
     
-    let port:in_port_t = 80
     let paths:Paths = Paths()
 
     override func viewDidLoad() {
