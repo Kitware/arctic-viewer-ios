@@ -272,6 +272,7 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
     }
 
     func load(URL: NSURL) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         let sessionConfig:NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session:NSURLSession = NSURLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)
         self.downloadTask = session.downloadTaskWithURL(URL)
@@ -293,6 +294,7 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
     }
 
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didFinishDownloadingToURL location: NSURL) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         if self.fileName.hasSuffix(".zip") {
             println("un-zipping")
             let path:NSURL = self.paths.datasetsSubdirectory(self.fileName)
@@ -359,6 +361,7 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if alertView.title == "Stop download?" {
             if buttonIndex == 0 {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 self.downloadTask.cancel()
                 self.uiLock(false)
             }
@@ -376,7 +379,7 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
         })
 
         UIApplication.sharedApplication().idleTimerDisabled = val
-
+        
         if val {
             self.downloadButton.removeTarget(self, action: Selector("downloadPressed:"), forControlEvents: UIControlEvents.TouchUpInside)
             self.downloadButton.addTarget(self, action: Selector("cancelPressed:"), forControlEvents: UIControlEvents.TouchUpInside)

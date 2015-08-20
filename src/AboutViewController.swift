@@ -152,6 +152,8 @@ class AboutViewController: UIViewController,
         let request:NSMutableURLRequest = NSMutableURLRequest(URL:URL)
         request.HTTPMethod = "GET"
 
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        
         let task:NSURLSessionTask = session.dataTaskWithRequest(request,
             completionHandler: { (data: NSData!, response: NSURLResponse!, error: NSError!) -> Void in
                 if error != nil {
@@ -194,6 +196,7 @@ class AboutViewController: UIViewController,
 
                 // get rid of the spinner, show a checkmark for 1.5 seconds, reenable the download button
                 dispatch_async(dispatch_get_main_queue(), {
+                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                     spinner.removeFromSuperview()
                     self.downloadButton.setImage(
                         UIImage(named: "checkmark", inBundle: NSBundle.mainBundle(), compatibleWithTraitCollection: nil),
