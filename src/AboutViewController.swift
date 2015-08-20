@@ -28,7 +28,6 @@ class AboutViewController: UIViewController,
         self.versionInput.text = self.currentVersion
         if let tags:[String] = NSUserDefaults.standardUserDefaults().arrayForKey("arctic-web-tags") as? [String] {
             self.versions = tags
-            self.versions.insert("master", atIndex: 0)
             self.picker.reloadAllComponents()
         }
 
