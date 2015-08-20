@@ -99,9 +99,6 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
             let alert:UIAlertView = UIAlertView(title: "Stop download?", message: "Stop downloading \(self.fileName)?", delegate: self, cancelButtonTitle: "Stop", otherButtonTitles: "Continue")
             alert.show()
         }
-        else {
-            self.downloadTask.cancel()
-        }
     }
 
     func progressUpdated(progress:Float) {
@@ -233,6 +230,14 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
 
     // MARK: URLSession methods
     func check(URL:NSURL, loadCallback:(NSURL)->()) {
+        // Check if Wifi enabled before downloading anything
+        if !isWifiOn() {
+            let alert:UIAlertView = UIAlertView(title: "Unable to download data", message: "You need to turn the Wifi ON.", delegate: nil, cancelButtonTitle: "OK")
+            alert.show()
+            self.uiLock(false)
+            return
+        }
+
         // check if location exists
         let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session = NSURLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)
@@ -265,7 +270,6 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
                         return
                     }
                 }
-
                 loadCallback(URL)
         })
         task.resume()
