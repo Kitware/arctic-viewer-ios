@@ -109,9 +109,17 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
             cell.subtitle?.text = "Size: calculating..."
         }
 
-        if let imageSrc:String = self.dataFolderThumbs[title] {
+        //see if there's an available thumbnail in the dataset
+        if let image:UIImage = self.offlineThumbnail(title) {
+//            println("offline thumb")
+            cell.thumb?.image = image
+        }
+        // fetch the thumbnail from a url or the sd-web image cache?
+        else if let imageSrc:String = self.dataFolderThumbs[title] {
+//            println("cached thumb")
             cell.thumb?.sd_setImageWithURL(NSURL(string:imageSrc))
         }
+        // set the thumbnail to the null-image
         else {
             cell.thumb?.image = UIImage(named: "null-image", inBundle: NSBundle.mainBundle(), compatibleWithTraitCollection: nil)
         }
@@ -150,6 +158,18 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
     }
 
     // MARK: misc
+    func offlineThumbnail(name:String) -> UIImage? {
+        let path:NSURL = self.paths.datasetsSubdirectory(name)
+        let list:[AnyObject]? = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path.absoluteString!, error: nil)
+        var image:UIImage? = nil
+        for file:String in list as! [String] {
+            if (file.hasSuffix(".png") || file.hasSuffix(".jpg") || file.hasSuffix(".jpeg")) && !file.hasPrefix(".") {
+                return UIImage(contentsOfFile: path.URLByAppendingPathComponent(file).absoluteString!)
+            }
+        }
+        return nil
+    }
+
     func handleURL(notifURL:NSNotification) {
         if let url:NSURL = notifURL.object as? NSURL {
             let fName:String = url.lastPathComponent!.componentsSeparatedByString(".").first!
