@@ -42,6 +42,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let datasetDocsPath:NSURL = self.paths.datasetsSubdirectory(".nada")
             manager.createFileAtPath(datasetDocsPath.path!, contents: nil, attributes: nil)
 
+            //disable iCloud backup of datasets
+            let datasetFilePath:NSURL = NSURL(fileURLWithPath: datasetDocsPath.absoluteString!)!
+            datasetFilePath.setResourceValue(NSNumber(bool: true), forKey: NSURLIsExcludedFromBackupKey, error: nil)
+
             //tmp folder for new ArcticViewer versions
             let tmpFolder:NSURL = paths.tmpDirectory()
             manager.createDirectoryAtPath(tmpFolder.absoluteString!, withIntermediateDirectories: false, attributes: nil, error: nil)
