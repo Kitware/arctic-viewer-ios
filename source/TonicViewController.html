@@ -157,8 +157,8 @@
 
         
           <div class='highlight'><pre>
-<span class="hljs-keyword">import</span> <span class="hljs-type">UIKit</span>
-<span class="hljs-keyword">import</span> <span class="hljs-type">WebKit</span>
+<span class="hljs-keyword">import</span> UIKit
+<span class="hljs-keyword">import</span> WebKit
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TonicViewController</span>: <span class="hljs-title">UIViewController</span>, <span class="hljs-title">WKNavigationDelegate</span> </span>{
 
@@ -168,8 +168,13 @@
     <span class="hljs-keyword">var</span> server: <span class="hljs-type">HttpServer</span>!
     <span class="hljs-keyword">var</span> fullscreen:<span class="hljs-type">Bool</span> = <span class="hljs-literal">false</span>
     <span class="hljs-keyword">var</span> ipText:<span class="hljs-type">String</span> = <span class="hljs-string">""</span>
+
+    #<span class="hljs-keyword">if</span> arch(i386) || arch(x86_64)
+        <span class="hljs-keyword">let</span> port:in_port_t = <span class="hljs-number">8080</span>
+    #<span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">let</span> port:in_port_t = <span class="hljs-number">80</span>
+    #endif
     
-    <span class="hljs-keyword">let</span> port:in_port_t = <span class="hljs-number">80</span>
     <span class="hljs-keyword">let</span> paths:<span class="hljs-type">Paths</span> = <span class="hljs-type">Paths</span>()
 
     <span class="hljs-keyword">override</span> <span class="hljs-func"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
