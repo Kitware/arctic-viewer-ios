@@ -7,8 +7,6 @@
     "www": "tonic-site-generator site.config.js",
     "www:http": "tonic-site-generator site.config.js --local-test && serve docs/www"
   },
-  "devDependencies": {
-    "serve": "^1.4.0",
-    "tonic-site-generator": "Kitware/tonic-site-generator"
+  "dependencies": {
   }
 }
