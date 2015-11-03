@@ -2,19 +2,56 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleName</key>
-	<string>Arctic Viewer</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleVersion</key>
-	<string>1</string>
-	<key>UIFileSharingEnabled</key>
-	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>icon_29.png</string>
+				<string>icon_58.png</string>
+				<string>icon_64.png</string>
+				<string>icon_320.png</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>GZip Tarball</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>org.gnu.gnu-zip-tar-archive</string>
+				<string>org.gnu.gnu-zip-archive</string>
+				<string>public.tar-archive</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Arctic Viewer</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -24,42 +61,12 @@
 	<array>
 		<string>armv7</string>
 	</array>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>GZip Tarball</string>
-			<key>CFBundleTypeIconFiles</key>
-			<array>
-				<string>icon_29.png</string>
-				<string>icon_58.png</string>
-				<string>icon_64.png</string>
-				<string>icon_320.png</string>
-			</array>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>org.gnu.gnu-zip-tar-archive</string>
-				<string>org.gnu.gnu-zip-archive</string>
-				<string>public.tar-archive</string>
-			</array>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-		</dict>
-	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -67,7 +74,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
 </dict>
 </plist>

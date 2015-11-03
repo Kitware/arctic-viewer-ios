@@ -42,8 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let datasetDocsPath:NSURL = self.paths.datasetsSubdirectory(".nada")
             manager.createFileAtPath(datasetDocsPath.path!, contents: nil, attributes: nil)
 
-            //disable iCloud backup of datasets
             do {
+                //disable iCloud backup of datasets
                 let datasetFilePath:NSURL = NSURL(fileURLWithPath: datasetDocsPath.absoluteString)
                 try datasetFilePath.setResourceValue(NSNumber(bool: true), forKey: NSURLIsExcludedFromBackupKey)
 
@@ -51,11 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let tmpFolder:NSURL = paths.tmpDirectory()
                 try manager.createDirectoryAtPath(tmpFolder.absoluteString, withIntermediateDirectories: false, attributes: nil)
 
-                //copy web_content from bundle to library
+                //copy web_content from bundle to /Library
                 let webContentPath:NSURL = NSURL(string: NSBundle.mainBundle().resourcePath! + "/web_content")!
                 let webContentDocPath:NSURL = self.paths.webcontentDirectory()
-                try manager.removeItemAtPath(webContentDocPath.absoluteString)
-
+                //try manager.removeItemAtPath(webContentDocPath.absoluteString)
                 try manager.createDirectoryAtPath(webContentDocPath.absoluteString, withIntermediateDirectories: false, attributes: nil)
 
                 let files:[AnyObject] = try manager.contentsOfDirectoryAtPath(webContentPath.absoluteString)
@@ -64,6 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     try manager.copyItemAtPath(webContentPath.absoluteString + "/" + file, toPath: webContentDocPath.absoluteString + "/" + file)
                 }
             } catch {
+                print("folder setup error!")
                 print((error as NSError).localizedDescription)
             }
 

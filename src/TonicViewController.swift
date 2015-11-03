@@ -20,7 +20,7 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
     var ipText:String = ""
 
     #if arch(i386) || arch(x86_64)
-        let port:in_port_t = 8080
+        let port:in_port_t = 40444
     #else
         let port:in_port_t = 80
     #endif
@@ -163,12 +163,30 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
 
     func startServer() {
         let serverPath:String = self.paths.webcontentDirectory().absoluteString
-        let server = demoServer(serverPath)
+        let server = self.makeServer(serverPath)
         self.server = server
         var error: NSError?
         if !server.start(self.port, error: &error) {
-            print("Server start error: \(error)")
+            print("Server start error on port \(self.port):: \(error?.localizedDescription)")
         }
+    }
+
+    func makeServer(publicDir: String?) -> HttpServer {
+        let server = HttpServer()
+
+        if let publicDir = publicDir {
+            server["/(.+)"] = HttpHandlers.directory(publicDir)
+            server["/"] = {request in
+                if let html = NSData(contentsOfFile:"\(publicDir)/index.html"){
+                    return HttpResponse.RAW(200, "OK", nil, html)
+                }
+                else {
+                    return HttpResponse.NotFound
+                }
+            }
+        }
+        
+        return server
     }
 
     override func didReceiveMemoryWarning() {

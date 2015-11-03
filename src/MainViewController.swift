@@ -139,6 +139,11 @@ class MainViewController: UITableViewController, UINavigationControllerDelegate,
 
         do {
             try NSFileManager.defaultManager().removeItemAtPath(webContentPath.absoluteString)
+        } catch {
+            print("No symlink to remove")
+        }
+
+        do {
             try NSFileManager.defaultManager().createSymbolicLinkAtPath(webContentPath.absoluteString, withDestinationPath: dataPath.absoluteString)
         } catch {
             print("problem creating symlink")
