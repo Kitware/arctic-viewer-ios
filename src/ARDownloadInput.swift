@@ -21,7 +21,7 @@ public class ARDownloadInput: UITextField {
     
     private let progressBar:CALayer = CALayer()
     
-    public var barColor:CGColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), [0, 0.4784, 1.0, 1]) {
+    public var barColor:CGColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), [0, 0.4784, 1.0, 1])! {
         didSet {
             self.progressBar.backgroundColor = self.barColor
         }
@@ -40,7 +40,7 @@ public class ARDownloadInput: UITextField {
     }
 
     required public init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         self.commonInit()
     }
     
@@ -54,7 +54,7 @@ public class ARDownloadInput: UITextField {
     }
     
     override public func drawRect(rect: CGRect) {
-       let frame = CGRect(origin: CGPointZero, size: CGSize(width: rect.size.width, height: rect.size.height))
+       //let frame = CGRect(origin: CGPointZero, size: CGSize(width: rect.size.width, height: rect.size.height))
     }
     
     private func updateProgressBar() {

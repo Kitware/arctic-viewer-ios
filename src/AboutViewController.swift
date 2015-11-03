@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NVHTarGzip
 
 class AboutViewController: UIViewController,
     UIImagePickerControllerDelegate, UIPickerViewDataSource, UITextFieldDelegate {
@@ -56,14 +57,17 @@ class AboutViewController: UIViewController,
         request.HTTPMethod = "GET"
 
         let task:NSURLSessionTask = session.dataTaskWithRequest(request,
-            completionHandler: { (data: NSData!, response: NSURLResponse!, error: NSError!) -> Void in
+            completionHandler: { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
                 if error != nil {
                     return
                 }
 
-                let json:AnyObject? = NSJSONSerialization.JSONObjectWithData(data,
-                    options: NSJSONReadingOptions.AllowFragments,
-                    error:nil)
+                var json:AnyObject?
+                do {
+                    try json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                } catch {
+                    print((error as NSError).localizedDescription)
+                }
 
                 self.versions = ["master"]
                 if let parsedJSON = json as? NSArray {
@@ -130,7 +134,7 @@ class AboutViewController: UIViewController,
 
     // MARK: Downloading
     @IBAction func downloadPressed(sender: AnyObject) {
-        if count(versionInput.text) == 0 {
+        if versionInput.text?.characters.count == 0 {
             return
         }
 
@@ -154,7 +158,7 @@ class AboutViewController: UIViewController,
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
         let task:NSURLSessionTask = session.dataTaskWithRequest(request,
-            completionHandler: { (data: NSData!, response: NSURLResponse!, error: NSError!) -> Void in
+            completionHandler: { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
                 if error != nil {
                     dispatch_async(dispatch_get_main_queue(), {
                         let alert:UIAlertView = UIAlertView(title: "Problem Downloading New Version", message: "", delegate: nil, cancelButtonTitle: "Cancel", otherButtonTitles: "")
@@ -167,31 +171,29 @@ class AboutViewController: UIViewController,
                 let manager:NSFileManager = NSFileManager.defaultManager()
                 let sourceTgzPath:NSURL = Paths().tmpDirectory().URLByAppendingPathComponent("\(self.versionInput.text).tar.gz")
                 manager.createFileAtPath(sourceTgzPath.path!, contents: data, attributes: nil)
-                var error:NSError?
-                NVHTarGzip.sharedInstance().unTarGzipFileAtPath(
+                try! NVHTarGzip.sharedInstance().unTarGzipFileAtPath(
                     sourceTgzPath.path!,
-                    toPath: Paths().tmpDirectory().path!,
-                    error: &error)
+                    toPath: Paths().tmpDirectory().path!)
 
                 // copy the items in the dist folder to web_content
                 // this will not copy directories
                 var trueVersion:String = "master"
                 if self.versionInput.text != "master" {
-                    trueVersion = self.versionInput.text.substringFromIndex(self.versionInput.text.startIndex.successor())
+                    trueVersion = self.versionInput.text!.substringFromIndex(self.versionInput.text!.startIndex.successor())
                 }
                 let versionDirectory:String = Paths().tmpDirectory().URLByAppendingPathComponent("arctic-viewer-\(trueVersion)").path!
                 let distDirectory:String = versionDirectory + "/dist/"
-                let files:[AnyObject] = manager.contentsOfDirectoryAtPath(distDirectory, error: nil)!
+                let files:[AnyObject] = try! manager.contentsOfDirectoryAtPath(distDirectory)
                 for file:String in files as! [String] {
                     // delete the old folder to avoid overwrite
                     if manager.isDeletableFileAtPath(Paths().webcontentDirectory().path! + "/" + file) {
-                        manager.removeItemAtPath(Paths().webcontentDirectory().path! + "/" + file, error: nil)
+                        try! manager.removeItemAtPath(Paths().webcontentDirectory().path! + "/" + file)
                     }
-                    manager.copyItemAtPath(distDirectory + "/" + file, toPath: Paths().webcontentDirectory().path! + "/" + file, error: nil)
+                    try! manager.copyItemAtPath(distDirectory + "/" + file, toPath: Paths().webcontentDirectory().path! + "/" + file)
                 }
                 // remove the old downloads
-                manager.removeItemAtPath(sourceTgzPath.path!, error: nil)
-                manager.removeItemAtPath(versionDirectory, error: nil)
+                try! manager.removeItemAtPath(sourceTgzPath.path!)
+                try! manager.removeItemAtPath(versionDirectory)
 
                 // get rid of the spinner, show a checkmark for 1.5 seconds, reenable the download button
                 dispatch_async(dispatch_get_main_queue(), {
@@ -210,7 +212,7 @@ class AboutViewController: UIViewController,
                         self.downloadButton.enabled = true
                     }
 
-                    self.currentVersion = self.versionInput.text
+                    self.currentVersion = self.versionInput.text!
                     NSUserDefaults.standardUserDefaults().setValue(self.currentVersion, forKey: "arctic-web-version")
                     NSUserDefaults.standardUserDefaults().synchronize()
                 })

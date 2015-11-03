@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import SSZipArchive
+import NVHTarGzip
+import SDWebImage
 
 class DownloadViewController: UIViewController, UINavigationControllerDelegate, //View management
     UIAlertViewDelegate, UITextFieldDelegate, //Small UI delegates
@@ -36,11 +39,9 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
         self.folderMetaData = NSUserDefaults.standardUserDefaults().dictionaryForKey("data-folder-sizes") as! [String:String]
 
         //load json here
-        let data:NSData = NSFileManager.defaultManager().contentsAtPath(paths.webcontentDirectory().URLByAppendingPathComponent("sample-data.json").absoluteString!)!
+        let data:NSData = NSFileManager.defaultManager().contentsAtPath(paths.webcontentDirectory().URLByAppendingPathComponent("sample-data.json").absoluteString)!
 
-        let json:AnyObject? = NSJSONSerialization.JSONObjectWithData(data,
-            options: NSJSONReadingOptions.AllowFragments,
-            error:nil)
+        let json:AnyObject? = try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
 
         if let parsedJSON = json as? NSArray {
             for item in parsedJSON {
@@ -69,12 +70,12 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
 
         self.urlInput.resignFirstResponder()
 
-        var text:String = urlInput.text
+        var text:String = urlInput.text!
         if self.selectedCell != nil {
             text = (self.grid.cellForItemAtIndexPath(self.selectedCell!) as! DownloadViewCell).url
         }
 
-        if count(text) == 0 {
+        if text.characters.count == 0 {
             return
         }
         else if ![".zip", ".tar", ".tgz", ".tar.gz", ".gz"].some({ ext in
@@ -138,7 +139,7 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
 
     func textFieldShouldClear(textField: UITextField) -> Bool {
         if selectedCell != nil {
-            self.grid.deselectItemAtIndexPath(self.selectedCell, animated: false)
+            self.grid.deselectItemAtIndexPath(self.selectedCell!, animated: false)
             self.selectedCell = nil
         }
         return true
@@ -148,13 +149,11 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell:DownloadViewCell = self.grid.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! DownloadViewCell
 
-        let title:String = self.contents[indexPath.row]["title"] as! String
-
         var urlFile:String = self.contents[indexPath.row]["url"] as! String
         cell.url = urlFile
 
         urlFile = urlFile.componentsSeparatedByString("/").last!.componentsSeparatedByString(".").first!
-        if contains(self.folderMetaData.keys.array, urlFile) {
+        if self.folderMetaData.keys.contains(urlFile) {
             cell.downloadedTag?.image = UIImage(named: "downloaded-tag", inBundle: NSBundle.mainBundle(), compatibleWithTraitCollection: nil)
             cell.downloadedTag?.hidden = false
         }
@@ -245,7 +244,7 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
         request.HTTPMethod = "HEAD"
 
         let task:NSURLSessionTask = session.dataTaskWithRequest(request,
-            completionHandler: { (data: NSData!, response: NSURLResponse!, error: NSError!) -> Void in
+            completionHandler: { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
 
                 if (response as! NSHTTPURLResponse).statusCode != 200 {
                     dispatch_async(dispatch_get_main_queue(), {
@@ -257,12 +256,12 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
 
                 if let freespace = self.deviceRemainingFreeSpaceInBytes() {
                     let requiredSpace:String = NSByteCountFormatter.stringFromByteCount(
-                        response.expectedContentLength,
+                        response!.expectedContentLength,
                         countStyle: NSByteCountFormatterCountStyle.File)
                     self.folderMetaData[self.fileTitle] = requiredSpace
                     NSUserDefaults.standardUserDefaults().setObject(self.folderMetaData, forKey: "data-folder-sizes")
                     NSUserDefaults.standardUserDefaults().synchronize()
-                    if freespace <= response.expectedContentLength {
+                    if freespace <= response!.expectedContentLength {
                         dispatch_async(dispatch_get_main_queue(), {
                             let alert:UIAlertView = UIAlertView(title: "Insufficient Space", message: "\(requiredSpace) needed to download this file.", delegate: self, cancelButtonTitle: "Cancel")
                             alert.show()
@@ -282,7 +281,7 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
         self.downloadTask = session.downloadTaskWithURL(URL)
         self.downloadTask.resume()
 
-        self.downloadInstance.downloadTitle = URL.absoluteString!.componentsSeparatedByString("/").last!
+        self.downloadInstance.downloadTitle = URL.absoluteString.componentsSeparatedByString("/").last!
         self.downloadInstance.downloadTask = self.downloadTask
     }
 
@@ -300,25 +299,35 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didFinishDownloadingToURL location: NSURL) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         if self.fileName.hasSuffix(".zip") {
-            println("un-zipping")
-            let path:NSURL = self.paths.datasetsSubdirectory(self.fileName)
+            print("un-zipping")
             self.unZip(location)
         }
         else if self.fileName.hasSuffix(".tar.gz") || self.fileName.hasSuffix(".tgz") {
-            println("un-gzipping, un-taring")
-            self.unTgz(location)
+            print("un-gzipping, un-taring")
+            do {
+                try self.unTgz(location)
+            } catch {
+                print((error as NSError).localizedDescription)
+            }
         }
         else if self.fileName.hasSuffix(".gz") {
-            println("un-gzipping")
-            let path:NSURL = self.paths.datasetsSubdirectory(self.fileName)
-            self.unGzip(location)
+            print("un-gzipping")
+            do {
+                try self.unGzip(location)
+            } catch {
+                print((error as NSError).localizedDescription)
+            }
         }
         else if self.fileName.hasSuffix(".tar") {
-            println("un-taring")
-            self.unTar(location)
+            print("un-taring")
+            do {
+                try self.unTar(location)
+            } catch {
+                print((error as NSError).localizedDescription)
+            }
         }
         else {
-            println("unrecognized extension")
+            print("unrecognized extension")
         }
 
         dispatch_async(dispatch_get_main_queue(), {
@@ -337,28 +346,25 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
     // TODO: This method is untested!
     func unZip(zipPath:NSURL) {
         let manager:NSFileManager = NSFileManager.defaultManager()
-        let newZipPath:String = zipPath.absoluteString!.componentsSeparatedByString("/").last!.componentsSeparatedByString(".").first! //drop the .zip
+        let newZipPath:String = zipPath.absoluteString.componentsSeparatedByString("/").last!.componentsSeparatedByString(".").first! //drop the .zip
         let destinationPath:NSURL = self.paths.datasetsSubdirectory("/datasets/" + newZipPath)
-        SSZipArchive.unzipFileAtPath(zipPath.absoluteString!, toDestination: destinationPath.absoluteString!)
-        manager.removeItemAtURL(zipPath, error: nil)
+        SSZipArchive.unzipFileAtPath(zipPath.absoluteString, toDestination: destinationPath.absoluteString)
+        try! manager.removeItemAtURL(zipPath)
     }
 
-    func unGzip(location:NSURL) {
+    func unGzip(location:NSURL) throws {
         let path:NSURL = self.paths.datasetsDirectory()
-        var error:NSError?
-        NVHTarGzip.sharedInstance().unGzipFileAtPath(location.path!, toPath: path.path, error: &error)
+        try NVHTarGzip.sharedInstance().unGzipFileAtPath(location.path!, toPath: path.path)
     }
 
-    func unTar(location:NSURL) {
+    func unTar(location:NSURL) throws {
         let path:NSURL = self.paths.datasetsDirectory()
-        var error:NSError?
-        NVHTarGzip.sharedInstance().unTarFileAtPath(location.path!, toPath: path.path!, error: &error)
+        try NVHTarGzip.sharedInstance().unTarFileAtPath(location.path!, toPath: path.path!)
     }
 
-    func unTgz(location:NSURL) {
+    func unTgz(location:NSURL) throws {
         let path:NSURL = self.paths.datasetsDirectory()
-        var error:NSError?
-        NVHTarGzip.sharedInstance().unTarGzipFileAtPath(location.path!, toPath: path.path!, error: &error)
+        try NVHTarGzip.sharedInstance().unTarGzipFileAtPath(location.path!, toPath: path.path!)
     }
 
     // MARK: misc
@@ -400,7 +406,7 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
 
     func deviceRemainingFreeSpaceInBytes() -> Int64? {
         let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        if let systemAttributes = NSFileManager.defaultManager().attributesOfFileSystemForPath(documentDirectoryPath.last as! String, error: nil) {
+        if let systemAttributes = try? NSFileManager.defaultManager().attributesOfFileSystemForPath(documentDirectoryPath.last!) {
             if let freeSize = systemAttributes[NSFileSystemFreeSize] as? NSNumber {
                 return freeSize.longLongValue
             }

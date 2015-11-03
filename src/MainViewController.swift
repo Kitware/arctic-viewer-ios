@@ -7,10 +7,9 @@
 //
 
 import UIKit
+import NVHTarGzip
 
-class MainViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource,
-    UINavigationControllerDelegate,
-    UIAlertViewDelegate {
+class MainViewController: UITableViewController, UINavigationControllerDelegate, UIAlertViewDelegate {
 
     let paths:Paths = Paths()
     let store:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -34,16 +33,16 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        let path:String = self.paths.datasetsDirectory().absoluteString!
-        self.dataFolders = (NSFileManager.defaultManager().contentsOfDirectoryAtPath(path, error: nil) as! [String])
+        let path:String = self.paths.datasetsDirectory().absoluteString
+        self.dataFolders = try! (NSFileManager.defaultManager().contentsOfDirectoryAtPath(path))
             .filter({ (obj:String) in
                 if obj.hasSuffix(".tar.gz") || obj.hasSuffix(".tgz") {
                     //remove the extension so it doesn't defalting twice
                     let newName:String = obj.componentsSeparatedByString(".").first!
                     if let url:NSURL = NSURL(string: path)?.URLByAppendingPathComponent(obj) {
-                        println("deflating!")
+                        print("deflating!")
                         let newURL:NSURL = NSURL(string: path)!.URLByAppendingPathComponent(newName)
-                        NSFileManager.defaultManager().moveItemAtPath(url.path!, toPath: newURL.path!, error: nil)
+                        try! NSFileManager.defaultManager().moveItemAtPath(url.path!, toPath: newURL.path!)
                         NSNotificationCenter.defaultCenter().postNotificationName("InboxFile", object: newURL)
                     }
                     return false
@@ -55,8 +54,8 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
 
         //cleanse cached values
         self.dataFolderSizes = store.dictionaryForKey("data-folder-sizes") as! [String:String]
-        let filteredMetadataKeys:[String] = self.dataFolderSizes.keys.array.filter({el in
-            return contains(self.dataFolders, el)
+        let filteredMetadataKeys:[String] = self.dataFolderSizes.keys.filter({el in
+            return self.dataFolders.contains(el)
         })
 
         var tmpMetaData:[String:String] = Dictionary()
@@ -67,7 +66,7 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
         self.store.setObject(tmpMetaData, forKey: "data-folder-sizes")
 
         self.dataFolderThumbs = store.dictionaryForKey("data-folder-thumbs") as! [String:String]
-        //println("\(self.dataFolderSizes)\n\(self.dataFolderThumbs)")
+        //print("\(self.dataFolderSizes)\n\(self.dataFolderThumbs)")
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -86,7 +85,7 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:MainViewTableCell = self.table.dequeueReusableCellWithIdentifier("cell") as! MainViewTableCell
+        let cell:MainViewTableCell = self.table.dequeueReusableCellWithIdentifier("cell") as! MainViewTableCell
 
         let title:String = self.dataFolders[indexPath.row]
         cell.title?.text = title
@@ -111,12 +110,12 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
 
         //see if there's an available thumbnail in the dataset
         if let image:UIImage = self.offlineThumbnail(title) {
-//            println("offline thumb")
+//            print("offline thumb")
             cell.thumb?.image = image
         }
         // fetch the thumbnail from a url or the sd-web image cache?
         else if let imageSrc:String = self.dataFolderThumbs[title] {
-//            println("cached thumb")
+//            print("cached thumb")
             cell.thumb?.sd_setImageWithURL(NSURL(string:imageSrc))
         }
         // set the thumbnail to the null-image
@@ -131,22 +130,21 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
         if self.deflating && indexPath.row == self.dataFolders.count - 1 {
-            println("not available")
+            print("not available")
             return
         }
 
         let webContentPath:NSURL = self.paths.webcontentData()
         let dataPath:NSURL = self.paths.datasetsSubdirectory(dataFolders[indexPath.row])
 
-        let error:NSErrorPointer = NSErrorPointer()
-        NSFileManager.defaultManager().removeItemAtPath(webContentPath.absoluteString!, error: nil)
-        NSFileManager.defaultManager().createSymbolicLinkAtPath(webContentPath.absoluteString!, withDestinationPath: dataPath.absoluteString!, error: error)
-
-        if error != nil {
-            println("problem creating symlink")
-            println(error.debugDescription)
-            return
+        do {
+            try NSFileManager.defaultManager().removeItemAtPath(webContentPath.absoluteString)
+            try NSFileManager.defaultManager().createSymbolicLinkAtPath(webContentPath.absoluteString, withDestinationPath: dataPath.absoluteString)
+        } catch {
+            print("problem creating symlink")
+            print((error as NSError).debugDescription)
         }
+
 
         presentTonicView(self.dataFolders[indexPath.row])
     }
@@ -160,11 +158,10 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
     // MARK: misc
     func offlineThumbnail(name:String) -> UIImage? {
         let path:NSURL = self.paths.datasetsSubdirectory(name)
-        let list:[AnyObject]? = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path.absoluteString!, error: nil)
-        var image:UIImage? = nil
+        let list:[AnyObject]? = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(path.absoluteString)
         for file:String in list as! [String] {
             if (file.hasSuffix(".png") || file.hasSuffix(".jpg") || file.hasSuffix(".jpeg")) && !file.hasPrefix(".") {
-                return UIImage(contentsOfFile: path.URLByAppendingPathComponent(file).absoluteString!)
+                return UIImage(contentsOfFile: path.URLByAppendingPathComponent(file).absoluteString)
             }
         }
         return nil
@@ -185,7 +182,7 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
                     self.deflating = false
                     self.table.reloadData()
 
-                    NSFileManager.defaultManager().removeItemAtPath(url.path!, error: nil)
+                    try! NSFileManager.defaultManager().removeItemAtPath(url.path!)
                 })
             })
         }
@@ -203,18 +200,18 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
     func completeDeflate(error:NSError!) {
         let keyPath:String = "fractionCompleted"
         if error != nil {
-            println("issue decompressing!")
+            print("issue decompressing!")
         }
         self.progress.resignCurrent()
         self.progress.removeObserver(self, forKeyPath: keyPath, context: self.NVHProgressObserverContext)
     }
-    
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if context == self.NVHProgressObserverContext {
             let _progress:NSProgress = object as! NSProgress;
             NSOperationQueue.mainQueue().addOperationWithBlock({
                 if fmod(_progress.fractionCompleted * 100, 10.0) == 0 {
-                    println(_progress.fractionCompleted)
+                    print(_progress.fractionCompleted)
                 }
             })
         }
@@ -228,7 +225,7 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
         case 0:
             let path:NSURL = self.paths.datasetsSubdirectory(self.dataFolders[self.cellToDelete])
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                NSFileManager.defaultManager().removeItemAtPath(path.absoluteString!, error: nil)
+                try! NSFileManager.defaultManager().removeItemAtPath(path.absoluteString)
             })
 
             self.dataFolderSizes.removeValueForKey(self.dataFolders[self.cellToDelete])
@@ -265,16 +262,15 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
     }
 
     func sizeForFolder(folderName:String) -> String {
-        let folderPath:String = self.paths.datasetsSubdirectory(folderName).absoluteString!
+        let folderPath:String = self.paths.datasetsSubdirectory(folderName).absoluteString
         if !NSFileManager.defaultManager().fileExistsAtPath(folderPath) {
             return "unknown"
         }
-        let contents:[String] = NSFileManager.defaultManager().subpathsOfDirectoryAtPath(folderPath, error: nil)! as! [String]
+        let contents:[String] = try! NSFileManager.defaultManager().subpathsOfDirectoryAtPath(folderPath) as [String]
         var folderSize:UInt64 = 0
 
         for file:String in contents {
-            let fDict:NSDictionary = NSFileManager.defaultManager().attributesOfItemAtPath(
-                folderPath + "/" + file, error: nil)!
+            let fDict:NSDictionary = try! NSFileManager.defaultManager().attributesOfItemAtPath(folderPath + "/" + file)
             folderSize += fDict.fileSize()
         }
         return NSByteCountFormatter.stringFromByteCount(Int64(folderSize), countStyle: NSByteCountFormatterCountStyle.File)
@@ -282,7 +278,7 @@ class MainViewController: UITableViewController, UITableViewDelegate, UITableVie
 
     func isDirectory(path:String) -> Bool {
         var isDir:ObjCBool = false
-        let exists = NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDir)
+        NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDir)
         return isDir.boolValue
     }
 }

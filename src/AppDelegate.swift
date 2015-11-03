@@ -43,25 +43,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             manager.createFileAtPath(datasetDocsPath.path!, contents: nil, attributes: nil)
 
             //disable iCloud backup of datasets
-            let datasetFilePath:NSURL = NSURL(fileURLWithPath: datasetDocsPath.absoluteString!)!
-            datasetFilePath.setResourceValue(NSNumber(bool: true), forKey: NSURLIsExcludedFromBackupKey, error: nil)
+            do {
+                let datasetFilePath:NSURL = NSURL(fileURLWithPath: datasetDocsPath.absoluteString)
+                try datasetFilePath.setResourceValue(NSNumber(bool: true), forKey: NSURLIsExcludedFromBackupKey)
 
-            //tmp folder for new ArcticViewer versions
-            let tmpFolder:NSURL = paths.tmpDirectory()
-            manager.createDirectoryAtPath(tmpFolder.absoluteString!, withIntermediateDirectories: false, attributes: nil, error: nil)
+                //tmp folder for new ArcticViewer versions
+                let tmpFolder:NSURL = paths.tmpDirectory()
+                try manager.createDirectoryAtPath(tmpFolder.absoluteString, withIntermediateDirectories: false, attributes: nil)
 
-            //copy web_content from bundle to library
-            let webContentPath:NSURL = NSURL(string: NSBundle.mainBundle().resourcePath! + "/web_content")!
-            let webContentDocPath:NSURL = self.paths.webcontentDirectory()
-            manager.removeItemAtPath(webContentDocPath.absoluteString!, error: nil)
-            let created:Bool = manager.createDirectoryAtPath(webContentDocPath.absoluteString!, withIntermediateDirectories: false, attributes: nil, error: nil)
-            println("web_content created: \(created)")
+                //copy web_content from bundle to library
+                let webContentPath:NSURL = NSURL(string: NSBundle.mainBundle().resourcePath! + "/web_content")!
+                let webContentDocPath:NSURL = self.paths.webcontentDirectory()
+                try manager.removeItemAtPath(webContentDocPath.absoluteString)
 
-            let files:[AnyObject] = manager.contentsOfDirectoryAtPath(webContentPath.absoluteString!, error: nil)!
+                try manager.createDirectoryAtPath(webContentDocPath.absoluteString, withIntermediateDirectories: false, attributes: nil)
 
-            //this will not copy directories
-            for file:String in files as! [String] {
-                manager.copyItemAtPath(webContentPath.absoluteString! + "/" + file, toPath: webContentDocPath.absoluteString! + "/" + file, error: nil)
+                let files:[AnyObject] = try manager.contentsOfDirectoryAtPath(webContentPath.absoluteString)
+                //this will not copy directories
+                for file:String in files as! [String] {
+                    try manager.copyItemAtPath(webContentPath.absoluteString + "/" + file, toPath: webContentDocPath.absoluteString + "/" + file)
+                }
+            } catch {
+                print((error as NSError).localizedDescription)
             }
 
             store.setBool(true, forKey: "first-start-setup")
@@ -74,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         // if this gets opened up to support .arctic, or arctic://[url] this will need to be refactored slightly.
         if url.fileURL {
             self.handleURL(url)

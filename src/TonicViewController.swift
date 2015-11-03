@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import Swifter
 
 class TonicViewController: UIViewController, WKNavigationDelegate {
 
@@ -44,7 +45,7 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
         self.view.insertSubview(self.wkWebView!, belowSubview: self.spinner)
 
         // set autolayout so the view is always 100% width and 100% height
-        self.wkWebView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        //self.wkWebView.setTranslatesAutoresizingMaskIntoConstraints(false)
         let bindings:[String:AnyObject] = ["v1": self.wkWebView]
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[v1]-0-|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: bindings))
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[v1]-0-|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: bindings))
@@ -53,7 +54,7 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
         UIApplication.sharedApplication().idleTimerDisabled = true
 
         // disable 'swipe to go back' gesture
-        self.navigationController?.interactivePopGestureRecognizer.enabled = false
+        self.navigationController?.interactivePopGestureRecognizer!.enabled = false
 
         //check for default fullscreen, if it's on for the first time or retoggled then an alert is shown.
         let store:NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -75,7 +76,7 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
         if let ip:String = self.getWifiIP() {
             self.ipText = "A server is running at:\n\(ip)" + (self.port == 80 ? "/" : ":\(self.port)/")
             let btnReload:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: Selector("showIpAlert"))
-            self.navigationController?.topViewController.navigationItem.rightBarButtonItem = btnReload
+            self.navigationController?.topViewController!.navigationItem.rightBarButtonItem = btnReload
             btnReload.enabled = true
         }
     }
@@ -88,7 +89,7 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.sharedApplication().idleTimerDisabled = false
-        self.navigationController?.interactivePopGestureRecognizer.enabled = true
+        self.navigationController?.interactivePopGestureRecognizer!.enabled = true
     }
 
     func getWifiIP() -> String? {
@@ -131,7 +132,7 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
     }
 
     // shake motion to go fullscreen
-    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent) {
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
         if motion == UIEventSubtype.MotionShake {
             self.fullscreen = !self.fullscreen;
             self.navigationController?.setNavigationBarHidden(self.fullscreen, animated: true)
@@ -161,12 +162,12 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
     }
 
     func startServer() {
-        let serverPath:String = self.paths.webcontentDirectory().absoluteString!
+        let serverPath:String = self.paths.webcontentDirectory().absoluteString
         let server = demoServer(serverPath)
         self.server = server
         var error: NSError?
-        if !server.start(listenPort: self.port, error: &error) {
-            println("Server start error: \(error)")
+        if !server.start(self.port, error: &error) {
+            print("Server start error: \(error)")
         }
     }
 

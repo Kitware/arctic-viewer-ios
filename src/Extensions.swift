@@ -11,7 +11,7 @@ import Foundation
 extension Array {
     // equivalent to Javascript's Array.prototype.some
     // from: https://github.com/tristaaan/jsSwift/blob/master/jsSwift/jsArray.swift
-    func some(fn: (T) -> Bool) -> Bool {
+    func some(fn: (Element) -> Bool) -> Bool {
         var out = false
         for i in self {
             out = out || fn(i);
@@ -72,7 +72,7 @@ func isWifiOn() -> Bool {
 
     var response: NSURLResponse?
 
-    var data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: nil) as NSData?
+    _ = try! NSURLConnection.sendSynchronousRequest(request, returningResponse: &response) as NSData?
 
     if let httpResponse = response as? NSHTTPURLResponse {
         if httpResponse.statusCode == 200 {

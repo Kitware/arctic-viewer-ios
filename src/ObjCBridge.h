@@ -9,9 +9,8 @@
 #ifndef Tonic_Native_ObjCBridge_h
 #define Tonic_Native_ObjCBridge_h
 
-#import "NVHTarGzip.h"
-#import "SSZipArchive.h"
-
+#import "NVHTarGzip/NVHTarGzip.h"
+#import "SSZipArchive/SSZipArchive.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 //for fetching device ip

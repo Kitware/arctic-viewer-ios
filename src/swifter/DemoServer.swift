@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import Swifter
 
 func demoServer(publicDir: String?) -> HttpServer {
     let server = HttpServer()
@@ -13,7 +14,7 @@ func demoServer(publicDir: String?) -> HttpServer {
         server["/(.+)"] = HttpHandlers.directory(publicDir)
         server["/"] = {request in
             if let html = NSData(contentsOfFile:"\(publicDir)/index.html"){
-                return .RAW(200, html)
+                return HttpResponse.RAW(200, "OK", nil, html)
             }
             else {
                 return .NotFound
