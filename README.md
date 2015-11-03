@@ -8,18 +8,19 @@ For iPhone and iPad, requires iOS 8 or newer.
 The project depends on three [CocoaPods](https://cocoapods.org/) which are marked in the `Podfile`.
 You can quickly install CocoaPods with `$ sudo gem install cocoapods`.
 
-
 ```
-$ git clone https://github.com/Kitware/arctic-viewer-ios.git 
+$ git clone https://github.com/Kitware/arctic-viewer-ios.git
 $ cd arctic-viewer
 $ pod install
 $ open -a XCode ArcticViewer.xcworkspace
 ```
 Because we're using CocoaPods always make sure you're openeing the `.xcworkspace` and **not** the `.xcodeproj`
 
-## Todo
+## Trying it out
 
-- Anticipate Swift 2.0 and iOS9
+From XCode you can run the project on an iOS Simulator. With a device plugged in,
+you can run it on the device itself. Arctic Viewer is also available
+[on the App Store](https://itunes.apple.com/us/app/arctic-viewer/id1038452328?mt=8).
 
 ## Licensing
 
