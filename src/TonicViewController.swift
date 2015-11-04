@@ -175,7 +175,20 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
         let server = HttpServer()
 
         if let publicDir = publicDir {
-            server["/(.+)"] = HttpHandlers.directory(publicDir)
+            server["/(.+)"] = { request in
+                print("\(publicDir)\(request.url)")
+                if NSFileManager.defaultManager().fileExistsAtPath("\(publicDir)\(request.url).gz") {
+                    if let response = NSData(contentsOfFile: "\(publicDir)\(request.url).gz") {
+                        return HttpResponse.RAW(200, "OK", ["Content-Encoding": "gzip"], response)
+                    }
+                    else {
+                        return HttpResponse.NotFound
+                    }
+                }
+                else {
+                    return HttpHandlers.directory(publicDir)(request)
+                }
+            }
             server["/"] = {request in
                 if let html = NSData(contentsOfFile:"\(publicDir)/index.html"){
                     return HttpResponse.RAW(200, "OK", nil, html)
