@@ -45,7 +45,7 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
         self.view.insertSubview(self.wkWebView!, belowSubview: self.spinner)
 
         // set autolayout so the view is always 100% width and 100% height
-        //self.wkWebView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.wkWebView.translatesAutoresizingMaskIntoConstraints = false
         let bindings:[String:AnyObject] = ["v1": self.wkWebView]
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[v1]-0-|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: bindings))
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[v1]-0-|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: bindings))
@@ -176,7 +176,6 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
 
         if let publicDir = publicDir {
             server["/(.+)"] = { request in
-                print("\(publicDir)\(request.url)")
                 if NSFileManager.defaultManager().fileExistsAtPath("\(publicDir)\(request.url).gz") {
                     if let response = NSData(contentsOfFile: "\(publicDir)\(request.url).gz") {
                         return HttpResponse.RAW(200, "OK", ["Content-Encoding": "gzip"], response)
