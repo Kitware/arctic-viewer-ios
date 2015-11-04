@@ -149,7 +149,7 @@ class AboutViewController: UIViewController,
         self.view.addSubview(spinner)
         spinner.startAnimating()
 
-        let URL:NSURL = NSURL(string: "https://github.com/Kitware/arctic-viewer/archive/\(self.versionInput.text).tar.gz")!
+        let URL:NSURL = NSURL(string: "https://github.com/Kitware/arctic-viewer/archive/\(self.versionInput.text!).tar.gz")!
         let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
         let request:NSMutableURLRequest = NSMutableURLRequest(URL:URL)
@@ -186,10 +186,15 @@ class AboutViewController: UIViewController,
                 let files:[AnyObject] = try! manager.contentsOfDirectoryAtPath(distDirectory)
                 for file:String in files as! [String] {
                     // delete the old folder to avoid overwrite
-                    if manager.isDeletableFileAtPath(Paths().webcontentDirectory().path! + "/" + file) {
-                        try! manager.removeItemAtPath(Paths().webcontentDirectory().path! + "/" + file)
+                    let filePath:String = Paths().webcontentDirectory().path! + "/" + file
+                    if manager.fileExistsAtPath(filePath) && manager.isDeletableFileAtPath(filePath) {
+                        do {
+                            try manager.removeItemAtPath(filePath)
+                        } catch {
+                            print("problem deleting at \(filePath)")
+                        }
                     }
-                    try! manager.copyItemAtPath(distDirectory + "/" + file, toPath: Paths().webcontentDirectory().path! + "/" + file)
+                    try! manager.copyItemAtPath(distDirectory + "/" + file, toPath: filePath)
                 }
                 // remove the old downloads
                 try! manager.removeItemAtPath(sourceTgzPath.path!)
