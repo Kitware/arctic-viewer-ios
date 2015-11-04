@@ -335,9 +335,11 @@ class DownloadViewController: UIViewController, UINavigationControllerDelegate, 
             self.downloadInstance.downloadTitle = ""
             self.downloadInstance.downloadTask = nil
             self.urlInput.text = ""
-            let cell:DownloadViewCell = self.grid.cellForItemAtIndexPath(self.selectedCell!) as! DownloadViewCell
-            cell.downloadedTag?.image = UIImage(named: "downloaded-tag", inBundle: NSBundle.mainBundle(), compatibleWithTraitCollection: nil)
-            cell.downloadedTag?.hidden = false
+            if self.selectedCell != nil {
+                let cell:DownloadViewCell = self.grid.cellForItemAtIndexPath(self.selectedCell!) as! DownloadViewCell
+                cell.downloadedTag?.image = UIImage(named: "downloaded-tag", inBundle: NSBundle.mainBundle(), compatibleWithTraitCollection: nil)
+                cell.downloadedTag?.hidden = false
+            }
         })
     }
 
