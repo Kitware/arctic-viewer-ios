@@ -20,6 +20,9 @@ class AboutViewController: UIViewController,
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     @IBOutlet weak var pickerContainerBottomConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var lensSwitch: UISwitch!
+    @IBOutlet weak var singleViewSwitch: UISwitch!
 
     var pickerOpen:Bool = false
     var versions:[String] = [String]()
@@ -42,6 +45,8 @@ class AboutViewController: UIViewController,
         if let version:String = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as? String {
             self.kwSubtitle.text = "v\(version)  " + self.kwSubtitle.text!
         }
+
+        self.setupSwitches()
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -51,6 +56,22 @@ class AboutViewController: UIViewController,
     @IBAction func refreshPressed(sender: AnyObject) {
         self.fetchVersions()
         self.refreshButton.enabled = false
+    }
+
+    func parseJson(data:NSData) -> [String:AnyObject]? {
+        var json:AnyObject?
+        do {
+            try json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+        } catch {
+            print((error as NSError).localizedDescription)
+            return nil
+        }
+
+        guard let parsedJSON:[String:AnyObject] = json as? [String:AnyObject] else {
+            return nil
+        }
+
+        return parsedJSON
     }
 
     // MARK: Fetching
@@ -135,6 +156,48 @@ class AboutViewController: UIViewController,
 
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
+    }
+
+    // MARK: config.json settings and switches
+    @IBAction func switchDidChange(sender:AnyObject) {
+        switch (sender as! UISwitch) {
+        case let x where x == self.lensSwitch:
+            self.configSwitch("MagicLens", newVal: self.lensSwitch.on)
+            break
+        case let x where x == self.singleViewSwitch:
+            self.configSwitch("SingleView", newVal: self.singleViewSwitch.on)
+            break
+        default:
+            break
+        }
+    }
+
+    func setupSwitches() {
+        let configPath:String = Paths().webcontentDirectory().path! + "/config.json"
+
+        if let parsedJSON:[String:AnyObject] = self.parseJson(NSData(contentsOfFile: configPath)!) {
+            self.lensSwitch.setOn(parsedJSON["MagicLens"] as! Bool, animated: false)
+            self.singleViewSwitch.setOn(parsedJSON["SingleView"] as! Bool, animated: false)
+        }
+    }
+
+    func configSwitch(attr:String, newVal:Bool) {
+        //open config.json
+        let configPath:String = Paths().webcontentDirectory().path! + "/config.json"
+        guard var parsedJSON:[String:AnyObject] = self.parseJson(NSData(contentsOfFile: configPath)!) else {
+            print("could not parse JSON")
+            return
+        }
+        //write new attribute value
+        parsedJSON[attr] = newVal
+
+        //save it
+        let stream:NSOutputStream = NSOutputStream(toFileAtPath: configPath, append: false)!
+        stream.open()
+        NSJSONSerialization.writeJSONObject(parsedJSON,
+            toStream: stream,
+            options: NSJSONWritingOptions(), error: nil)
+        stream.close()
     }
 
     // MARK: Downloading

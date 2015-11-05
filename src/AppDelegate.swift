@@ -35,9 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ]);
 
         // folder setup, only do this once
+        let manager:NSFileManager = NSFileManager.defaultManager()
         if !store.boolForKey("first-start-setup") {
-            let manager:NSFileManager = NSFileManager.defaultManager()
-
             //datasets will download here, place an empty file to make sure it's ok.
             let datasetDocsPath:NSURL = self.paths.datasetsSubdirectory(".nada")
             manager.createFileAtPath(datasetDocsPath.path!, contents: nil, attributes: nil)
@@ -68,6 +67,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
 
             store.setBool(true, forKey: "first-start-setup")
+        }
+
+        if !manager.fileExistsAtPath(Paths().webcontentDirectory().path! + "/config.json") {
+            do {
+                try manager.copyItemAtPath(NSBundle.mainBundle().resourcePath! + "/web_content/config.json",
+                    toPath: Paths().webcontentDirectory().path! + "/config.json")
+            } catch {
+                print((error as NSError).localizedDescription)
+            }
         }
 
         if let url:NSURL = launchOptions?[UIApplicationLaunchOptionsURLKey] as? NSURL {
