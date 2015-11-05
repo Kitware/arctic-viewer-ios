@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="n6H-3f-u6q">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="n6H-3f-u6q">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -16,8 +17,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="100" id="bV0-le-4Tz" customClass="MainViewTableCell" customModule="ArcticViewer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="86" width="600" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bV0-le-4Tz" id="Ci5-q5-fvT">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="99.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PWU-Tv-SfN">
@@ -116,7 +119,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="o09-gj-RHE" customClass="ARDownloadInput" customModule="ArcticViewer" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="o09-gj-RHE" customClass="ARDownloadInput" customModule="ArcticViewer" customModuleProvider="target">
                                 <rect key="frame" x="15" y="126" width="523" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -124,7 +127,7 @@
                                     <outlet property="delegate" destination="JeT-VD-pvi" id="x1J-83-Yi2"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hzC-M1-ahY">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hzC-M1-ahY">
                                 <rect key="frame" x="546" y="126" width="37" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="hzC-M1-ahY" secondAttribute="height" multiplier="37:30" id="JtD-Rf-sbU"/>
@@ -136,10 +139,10 @@
                                     <action selector="downloadPressed:" destination="JeT-VD-pvi" eventType="touchUpInside" id="UgF-Yq-8LG"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WLX-qP-Yw5">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WLX-qP-Yw5">
                                 <rect key="frame" x="0.0" y="600" width="600" height="204"/>
                                 <subviews>
-                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="awJ-TZ-IAv">
+                                    <pickerView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="awJ-TZ-IAv">
                                         <rect key="frame" x="0.0" y="43" width="600" height="162"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="160" id="Hhh-uU-5b0"/>
@@ -218,6 +221,7 @@
                     <connections>
                         <outlet property="doneButton" destination="4z8-lo-UKa" id="UrI-bI-sIC"/>
                         <outlet property="downloadButton" destination="hzC-M1-ahY" id="2Dc-bb-xr9"/>
+                        <outlet property="kwSubtitle" destination="XLM-Az-0ru" id="5ed-h2-wEN"/>
                         <outlet property="picker" destination="awJ-TZ-IAv" id="IWz-LH-17p"/>
                         <outlet property="pickerContainer" destination="WLX-qP-Yw5" id="o3q-NJ-2bj"/>
                         <outlet property="pickerContainerBottomConstraint" destination="gyP-fo-fuI" id="XkL-fc-P75"/>
@@ -273,7 +277,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://somewhere.com/file.tgz" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="x28-A7-QTk" customClass="ARDownloadInput" customModule="ArcticViewer" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://somewhere.com/file.tgz" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="x28-A7-QTk" customClass="ARDownloadInput" customModule="ArcticViewer" customModuleProvider="target">
                                 <rect key="frame" x="16" y="75" width="527" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="done"/>
@@ -281,7 +285,7 @@
                                     <outlet property="delegate" destination="0kQ-Gc-xD5" id="k8R-dj-WGd"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L6Q-SC-DNU">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L6Q-SC-DNU">
                                 <rect key="frame" x="551" y="64" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="L6Q-SC-DNU" secondAttribute="height" multiplier="1:1" id="dgr-il-DEk"/>
@@ -294,7 +298,7 @@
                                     <action selector="downloadPressed:" destination="0kQ-Gc-xD5" eventType="touchUpInside" id="eQV-9R-aWL"/>
                                 </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="en0-XP-Yno">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="en0-XP-Yno">
                                 <rect key="frame" x="16" y="113" width="568" height="487"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -308,7 +312,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="uOY-Fi-P8a" customClass="DownloadViewCell" customModule="ArcticViewer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="138" height="138"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="138" height="138"/>

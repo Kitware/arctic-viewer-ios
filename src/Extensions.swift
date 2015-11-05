@@ -62,6 +62,8 @@ extension NSTimer {
     }
 }
 
+// end SwiftyTimer //
+
 func isWifiOn() -> Bool {
     var Status:Bool = false
     let url = NSURL(string: "http://kitware.com/")
@@ -82,5 +84,3 @@ func isWifiOn() -> Bool {
 
     return Status
 }
-
-// end SwiftyTimer //

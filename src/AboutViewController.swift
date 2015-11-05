@@ -12,6 +12,7 @@ import NVHTarGzip
 class AboutViewController: UIViewController,
     UIImagePickerControllerDelegate, UIPickerViewDataSource, UITextFieldDelegate {
 
+    @IBOutlet weak var kwSubtitle: UILabel!
     @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var versionInput: ARDownloadInput!
     @IBOutlet weak var pickerContainer: UIView!
@@ -36,6 +37,10 @@ class AboutViewController: UIViewController,
         if !firstFetch {
             self.fetchVersions()
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "first-start-version-fetching")
+        }
+
+        if let version:String = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as? String {
+            self.kwSubtitle.text = "v\(version)  " + self.kwSubtitle.text!
         }
     }
 
