@@ -14,12 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let paths:Paths = Paths()
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
         //register store defaults.
-        let store:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        store.registerDefaults([
+        let store:UserDefaults = UserDefaults.standard
+        store.register(defaults: [
             "first-start-setup": false,
             "first-start-version-fetching": false,
 
@@ -35,59 +35,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ]);
 
         // folder setup, only do this once
-        let manager:NSFileManager = NSFileManager.defaultManager()
-        if !store.boolForKey("first-start-setup") {
+        let manager:FileManager = FileManager.default
+        if !store.bool(forKey: "first-start-setup") {
             //datasets will download here, place an empty file to make sure it's ok.
-            let datasetDocsPath:NSURL = self.paths.datasetsSubdirectory(".nada")
-            manager.createFileAtPath(datasetDocsPath.path!, contents: nil, attributes: nil)
+            let datasetDocsPath:URL = self.paths.datasetsSubdirectory(".nada")
+            manager.createFile(atPath: datasetDocsPath.path, contents: nil, attributes: nil)
 
             do {
                 //disable iCloud backup of datasets
-                let datasetFilePath:NSURL = NSURL(fileURLWithPath: datasetDocsPath.absoluteString)
-                try datasetFilePath.setResourceValue(NSNumber(bool: true), forKey: NSURLIsExcludedFromBackupKey)
+                let datasetFilePath:URL = URL(fileURLWithPath: datasetDocsPath.absoluteString)
+                try (datasetFilePath as NSURL).setResourceValue(NSNumber(value: true as Bool), forKey: URLResourceKey.isExcludedFromBackupKey)
 
                 //tmp folder for new ArcticViewer versions
-                let tmpFolder:NSURL = paths.tmpDirectory()
-                try manager.createDirectoryAtPath(tmpFolder.absoluteString, withIntermediateDirectories: false, attributes: nil)
+                let tmpFolder:URL = paths.tmpDirectory() as URL
+                try manager.createDirectory(atPath: tmpFolder.absoluteString, withIntermediateDirectories: false, attributes: nil)
 
                 //copy web_content from bundle to /Library
-                let webContentPath:NSURL = NSURL(string: NSBundle.mainBundle().resourcePath! + "/web_content")!
-                let webContentDocPath:NSURL = self.paths.webcontentDirectory()
+                let webContentPath:URL = URL(string: Bundle.main.resourcePath! + "/web_content")!
+                let webContentDocPath:URL = self.paths.webcontentDirectory() as URL
                 //try manager.removeItemAtPath(webContentDocPath.absoluteString)
-                try manager.createDirectoryAtPath(webContentDocPath.absoluteString, withIntermediateDirectories: false, attributes: nil)
+                try manager.createDirectory(atPath: webContentDocPath.absoluteString, withIntermediateDirectories: false, attributes: nil)
 
-                let files:[AnyObject] = try manager.contentsOfDirectoryAtPath(webContentPath.absoluteString)
+                let files:[AnyObject] = try manager.contentsOfDirectory(atPath: webContentPath.absoluteString) as [AnyObject]
                 //this will not copy directories
                 for file:String in files as! [String] {
-                    try manager.copyItemAtPath(webContentPath.absoluteString + "/" + file, toPath: webContentDocPath.absoluteString + "/" + file)
+                    try manager.copyItem(atPath: webContentPath.absoluteString + "/" + file, toPath: webContentDocPath.absoluteString + "/" + file)
                 }
             } catch {
                 print("folder setup error!")
                 print((error as NSError).localizedDescription)
             }
 
-            store.setBool(true, forKey: "first-start-setup")
+            store.set(true, forKey: "first-start-setup")
         }
 
-        if !manager.fileExistsAtPath(Paths().webcontentDirectory().path! + "/config.json") {
+        if !manager.fileExists(atPath: Paths().webcontentDirectory().path + "/config.json") {
             do {
-                try manager.copyItemAtPath(NSBundle.mainBundle().resourcePath! + "/web_content/config.json",
-                    toPath: Paths().webcontentDirectory().path! + "/config.json")
+                try manager.copyItem(atPath: Bundle.main.resourcePath! + "/web_content/config.json",
+                    toPath: Paths().webcontentDirectory().path + "/config.json")
             } catch {
                 print((error as NSError).localizedDescription)
             }
         }
 
-        if let url:NSURL = launchOptions?[UIApplicationLaunchOptionsURLKey] as? NSURL {
+        if let url:URL = launchOptions?[UIApplicationLaunchOptionsKey.url] as? URL {
             self.handleURL(url)
         }
 
         return true
     }
 
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         // if this gets opened up to support .arctic, or arctic://[url] this will need to be refactored slightly.
-        if url.fileURL {
+        if url.isFileURL {
             self.handleURL(url)
             return true
         }
@@ -96,29 +96,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func handleURL(url:NSURL) {
-        NSNotificationCenter.defaultCenter().postNotificationName("InboxFile", object: url)
+    func handleURL(_ url:URL) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "InboxFile"), object: url)
     }
 
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 }

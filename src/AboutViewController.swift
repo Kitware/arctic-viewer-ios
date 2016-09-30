@@ -26,42 +26,42 @@ class AboutViewController: UIViewController,
 
     var pickerOpen:Bool = false
     var versions:[String] = [String]()
-    var currentVersion:String = NSUserDefaults.standardUserDefaults().stringForKey("arctic-web-version")!
+    var currentVersion:String = UserDefaults.standard.string(forKey: "arctic-web-version")!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.versionInput.text = self.currentVersion
-        if let tags:[String] = NSUserDefaults.standardUserDefaults().arrayForKey("arctic-web-tags") as? [String] {
+        if let tags:[String] = UserDefaults.standard.array(forKey: "arctic-web-tags") as? [String] {
             self.versions = tags
             self.picker.reloadAllComponents()
         }
 
-        let firstFetch:Bool = NSUserDefaults.standardUserDefaults().boolForKey("first-start-version-fetching")
+        let firstFetch:Bool = UserDefaults.standard.bool(forKey: "first-start-version-fetching")
         if !firstFetch {
             self.fetchVersions()
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "first-start-version-fetching")
+            UserDefaults.standard.set(true, forKey: "first-start-version-fetching")
         }
 
-        if let version:String = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as? String {
+        if let version:String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String {
             self.kwSubtitle.text = "v\(version)  " + self.kwSubtitle.text!
         }
 
         self.setupSwitches()
     }
 
-    override func viewWillDisappear(animated: Bool) {
-        NSUserDefaults.standardUserDefaults().synchronize()
+    override func viewWillDisappear(_ animated: Bool) {
+        UserDefaults.standard.synchronize()
     }
 
-    @IBAction func refreshPressed(sender: AnyObject) {
+    @IBAction func refreshPressed(_ sender: AnyObject) {
         self.fetchVersions()
-        self.refreshButton.enabled = false
+        self.refreshButton.isEnabled = false
     }
 
-    func parseJson(data:NSData) -> [String:AnyObject]? {
-        var json:AnyObject?
+    func parseJson(_ data:Data) -> [String:AnyObject]? {
+        var json:Any?
         do {
-            try json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+            try json = JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
         } catch {
             print((error as NSError).localizedDescription)
             return nil
@@ -76,43 +76,43 @@ class AboutViewController: UIViewController,
 
     // MARK: Fetching
     func fetchVersions() {
-        let URL:NSURL = NSURL(string: "https://api.github.com/repos/Kitware/arctic-viewer/tags")!
-        let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL:URL)
-        request.HTTPMethod = "GET"
+        let URL:Foundation.URL = Foundation.URL(string: "https://api.github.com/repos/Kitware/arctic-viewer/tags")!
+        let sessionConfig = URLSessionConfiguration.default
+        let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+        var request:URLRequest = URLRequest(url:URL)
+        request.httpMethod = "GET"
 
-        let task:NSURLSessionTask = session.dataTaskWithRequest(request,
-            completionHandler: { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+        let task:URLSessionTask = session.dataTask(with: request,
+            completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
                 if error != nil {
                     return
                 }
 
-                var json:AnyObject?
+                var json:Any?
                 do {
-                    try json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                    try json = JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments)
                 } catch {
                     print((error as NSError).localizedDescription)
                 }
 
                 self.versions = ["master"]
-                if let parsedJSON = json as? NSArray {
+                if let parsedJSON = json as? [[String: Any]] {
                     for item in parsedJSON {
-                        self.versions.append((item["name"] as! String))
+                        self.versions.append(item["name"] as! String)
                     }
                 }
 
-                NSUserDefaults.standardUserDefaults().setObject(self.versions, forKey: "arctic-web-tags")
+                UserDefaults.standard.set(self.versions, forKey: "arctic-web-tags")
 
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.refreshButton.enabled = true
+                DispatchQueue.main.async(execute: {
+                    self.refreshButton.isEnabled = true
                     self.picker.reloadAllComponents()
                 })
         })
         task.resume()
     }
 
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.showUIPicker()
         return false
     }
@@ -128,44 +128,44 @@ class AboutViewController: UIViewController,
         }
         self.picker.selectRow(indexOfCurrentVersion, inComponent: 0, animated: false)
         self.pickerOpen = true
-        UIView.animateWithDuration(0.3, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             self.pickerContainerBottomConstraint.constant = 0.0
-                self.pickerContainer.frame.origin = CGPointMake(0, self.view.frame.size.height - self.pickerContainer.frame.height)
+                self.pickerContainer.frame.origin = CGPoint(x: 0, y: self.view.frame.size.height - self.pickerContainer.frame.height)
         })
     }
 
-    @IBAction func hidePickerView(sender: AnyObject) {
+    @IBAction func hidePickerView(_ sender: AnyObject) {
         self.pickerOpen = false
-        UIView.animateWithDuration(0.3, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             self.pickerContainerBottomConstraint.constant = -self.pickerContainer.frame.size.height
-            self.pickerContainer.frame.origin = CGPointMake(0, self.view.frame.size.height)
+            self.pickerContainer.frame.origin = CGPoint(x: 0, y: self.view.frame.size.height)
         })
     }
 
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.versionInput.text = self.versions[row]
     }
 
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         return self.versions[row]
     }
 
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return self.versions.count
     }
 
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
 
     // MARK: config.json settings and switches
-    @IBAction func switchDidChange(sender:AnyObject) {
+    @IBAction func switchDidChange(_ sender:AnyObject) {
         switch (sender as! UISwitch) {
         case let x where x == self.lensSwitch:
-            self.configSwitch("MagicLens", newVal: self.lensSwitch.on)
+            self.configSwitch("MagicLens", newVal: self.lensSwitch.isOn)
             break
         case let x where x == self.singleViewSwitch:
-            self.configSwitch("SingleView", newVal: self.singleViewSwitch.on)
+            self.configSwitch("SingleView", newVal: self.singleViewSwitch.isOn)
             break
         default:
             break
@@ -173,62 +173,61 @@ class AboutViewController: UIViewController,
     }
 
     func setupSwitches() {
-        let configPath:String = Paths().webcontentDirectory().path! + "/config.json"
+        let configPath:String = Paths().webcontentDirectory().path + "/config.json"
 
-        if let parsedJSON:[String:AnyObject] = self.parseJson(NSData(contentsOfFile: configPath)!) {
+        if let parsedJSON:[String:AnyObject] = self.parseJson(try! Data(contentsOf: URL(fileURLWithPath: configPath))) {
             self.lensSwitch.setOn(parsedJSON["MagicLens"] as! Bool, animated: false)
             self.singleViewSwitch.setOn(parsedJSON["SingleView"] as! Bool, animated: false)
         }
     }
 
-    func configSwitch(attr:String, newVal:Bool) {
+    func configSwitch(_ attr:String, newVal:Bool) {
         //open config.json
-        let configPath:String = Paths().webcontentDirectory().path! + "/config.json"
-        guard var parsedJSON:[String:AnyObject] = self.parseJson(NSData(contentsOfFile: configPath)!) else {
+        let configPath:String = Paths().webcontentDirectory().path + "/config.json"
+        guard var parsedJSON:[String:AnyObject] = self.parseJson(try! Data(contentsOf: URL(fileURLWithPath: configPath))) else {
             print("could not parse JSON")
             return
         }
         //write new attribute value
-        parsedJSON[attr] = newVal
+        parsedJSON[attr] = newVal as AnyObject?
 
         //save it
-        let stream:NSOutputStream = NSOutputStream(toFileAtPath: configPath, append: false)!
+        let stream:OutputStream = OutputStream(toFileAtPath: configPath, append: false)!
         stream.open()
-        NSJSONSerialization.writeJSONObject(parsedJSON,
-            toStream: stream,
-            options: NSJSONWritingOptions(), error: nil)
+        JSONSerialization.writeJSONObject(parsedJSON,
+            to: stream,
+            options: JSONSerialization.WritingOptions(), error: nil)
         stream.close()
     }
 
     // MARK: Downloading
-    @IBAction func downloadPressed(sender: AnyObject) {
+    @IBAction func downloadPressed(_ sender: AnyObject) {
         if versionInput.text?.characters.count == 0 {
             return
         }
 
         if self.pickerOpen {
-            self.hidePickerView(Int())
+            self.hidePickerView(Int() as AnyObject)
         }
 
-        self.downloadButton.hidden = true
+        self.downloadButton.isHidden = true
         let spinner:UIActivityIndicatorView = UIActivityIndicatorView()
         spinner.color = UIColor(red: 0.209, green: 0.596, blue: 0.858, alpha: 1)
         spinner.frame = self.downloadButton.frame
         self.view.addSubview(spinner)
         spinner.startAnimating()
 
-        let URL:NSURL = NSURL(string: "https://github.com/Kitware/arctic-viewer/archive/\(self.versionInput.text!).tar.gz")!
-        let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL:URL)
-        request.HTTPMethod = "GET"
+        let URL:Foundation.URL = Foundation.URL(string: "https://github.com/Kitware/arctic-viewer/archive/\(self.versionInput.text!).tar.gz")!
+        let sessionConfig = URLSessionConfiguration.default
+        let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+        var request:URLRequest = URLRequest(url:URL)
+        request.httpMethod = "GET"
 
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        
-        let task:NSURLSessionTask = session.dataTaskWithRequest(request,
-            completionHandler: { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        let task:URLSessionTask = session.dataTask(with: request,
+            completionHandler: { (data:Data?, response:URLResponse?, error:Error?) -> Void in
                 if error != nil {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         let alert:UIAlertView = UIAlertView(title: "Problem Downloading New Version", message: "", delegate: nil, cancelButtonTitle: "Cancel", otherButtonTitles: "")
                         alert.show()
                     })
@@ -236,58 +235,58 @@ class AboutViewController: UIViewController,
                 }
 
                 // deflate download.
-                let manager:NSFileManager = NSFileManager.defaultManager()
-                let sourceTgzPath:NSURL = Paths().tmpDirectory().URLByAppendingPathComponent("\(self.versionInput.text).tar.gz")
-                manager.createFileAtPath(sourceTgzPath.path!, contents: data, attributes: nil)
-                try! NVHTarGzip.sharedInstance().unTarGzipFileAtPath(
-                    sourceTgzPath.path!,
-                    toPath: Paths().tmpDirectory().path!)
+                let manager:FileManager = FileManager.default
+                let sourceTgzPath:Foundation.URL = Paths().tmpDirectory().appendingPathComponent("\(self.versionInput.text).tar.gz")
+                manager.createFile(atPath: sourceTgzPath.path, contents: data, attributes: nil)
+                try! NVHTarGzip.sharedInstance().unTarGzipFile(
+                    atPath: sourceTgzPath.path,
+                    toPath: Paths().tmpDirectory().path)
 
                 // copy the items in the dist folder to web_content
                 // this will not copy directories
                 var trueVersion:String = "master"
                 if self.versionInput.text != "master" {
-                    trueVersion = self.versionInput.text!.substringFromIndex(self.versionInput.text!.startIndex.successor())
+                    trueVersion = self.versionInput.text!.substring(from: self.versionInput.text!.characters.index(after: self.versionInput.text!.startIndex))
                 }
-                let versionDirectory:String = Paths().tmpDirectory().URLByAppendingPathComponent("arctic-viewer-\(trueVersion)").path!
+                let versionDirectory:String = Paths().tmpDirectory().appendingPathComponent("arctic-viewer-\(trueVersion)").path
                 let distDirectory:String = versionDirectory + "/dist/"
-                let files:[AnyObject] = try! manager.contentsOfDirectoryAtPath(distDirectory)
+                let files:[AnyObject] = try! manager.contentsOfDirectory(atPath: distDirectory) as [AnyObject]
                 for file:String in files as! [String] {
                     // delete the old folder to avoid overwrite
-                    let filePath:String = Paths().webcontentDirectory().path! + "/" + file
-                    if manager.fileExistsAtPath(filePath) && manager.isDeletableFileAtPath(filePath) {
+                    let filePath:String = Paths().webcontentDirectory().path + "/" + file
+                    if manager.fileExists(atPath: filePath) && manager.isDeletableFile(atPath: filePath) {
                         do {
-                            try manager.removeItemAtPath(filePath)
+                            try manager.removeItem(atPath: filePath)
                         } catch {
                             print("problem deleting at \(filePath)")
                         }
                     }
-                    try! manager.copyItemAtPath(distDirectory + "/" + file, toPath: filePath)
+                    try! manager.copyItem(atPath: distDirectory + "/" + file, toPath: filePath)
                 }
                 // remove the old downloads
-                try! manager.removeItemAtPath(sourceTgzPath.path!)
-                try! manager.removeItemAtPath(versionDirectory)
+                try! manager.removeItem(atPath: sourceTgzPath.path)
+                try! manager.removeItem(atPath: versionDirectory)
 
                 // get rid of the spinner, show a checkmark for 1.5 seconds, reenable the download button
-                dispatch_async(dispatch_get_main_queue(), {
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                DispatchQueue.main.async(execute: {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     spinner.removeFromSuperview()
                     self.downloadButton.setImage(
-                        UIImage(named: "checkmark", inBundle: NSBundle.mainBundle(), compatibleWithTraitCollection: nil),
-                        forState: UIControlState.Normal)
-                    self.downloadButton.enabled = false
-                    self.downloadButton.hidden = false
+                        UIImage(named: "checkmark", in: Bundle.main, compatibleWith: nil),
+                        for: UIControlState())
+                    self.downloadButton.isEnabled = false
+                    self.downloadButton.isHidden = false
 
-                    NSTimer.after(NSTimeInterval(1.5)){
+                    let _ = Timer.after(TimeInterval(1.5)){
                         self.downloadButton.setImage(
-                            UIImage(named: "download", inBundle: NSBundle.mainBundle(),compatibleWithTraitCollection: nil),
-                            forState: UIControlState.Normal)
-                        self.downloadButton.enabled = true
+                            UIImage(named: "download", in: Bundle.main,compatibleWith: nil),
+                            for: UIControlState())
+                        self.downloadButton.isEnabled = true
                     }
 
                     self.currentVersion = self.versionInput.text!
-                    NSUserDefaults.standardUserDefaults().setValue(self.currentVersion, forKey: "arctic-web-version")
-                    NSUserDefaults.standardUserDefaults().synchronize()
+                    UserDefaults.standard.setValue(self.currentVersion, forKey: "arctic-web-version")
+                    UserDefaults.standard.synchronize()
                 })
         })
         task.resume()

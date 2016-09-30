@@ -10,37 +10,37 @@ import Foundation
 
  class Paths {
 
-    let applicationDocumentsDirectory:NSURL!
-    let applicationInboxDirectory:NSURL!
-    let applicationLibraryDirectory:NSURL!
+    let applicationDocumentsDirectory:URL!
+    let applicationInboxDirectory:URL!
+    let applicationLibraryDirectory:URL!
 
     init(){
-        var paths:[AnyObject] = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-        self.applicationDocumentsDirectory = NSURL(string: paths[0] as! String)!
+        var paths:[AnyObject] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true) as [AnyObject]
+        self.applicationDocumentsDirectory = URL(string: paths[0] as! String)!
 
-        paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-        self.applicationLibraryDirectory = NSURL(string: paths[0] as! String)!
+        paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.libraryDirectory, FileManager.SearchPathDomainMask.userDomainMask, true) as [AnyObject]
+        self.applicationLibraryDirectory = URL(string: paths[0] as! String)!
 
-        self.applicationInboxDirectory = self.applicationDocumentsDirectory.URLByAppendingPathComponent("Inbox")
+        self.applicationInboxDirectory = self.applicationDocumentsDirectory.appendingPathComponent("Inbox")
     }
 
-    func tmpDirectory() -> NSURL {
-        return self.applicationLibraryDirectory.URLByAppendingPathComponent("tmp")
+    func tmpDirectory() -> URL {
+        return self.applicationLibraryDirectory.appendingPathComponent("tmp")
     }
 
-    func datasetsDirectory() -> NSURL {
+    func datasetsDirectory() -> URL {
         return self.applicationDocumentsDirectory
     }
 
-    func datasetsSubdirectory(sub:String) -> NSURL {
-        return self.datasetsDirectory().URLByAppendingPathComponent(sub)
+    func datasetsSubdirectory(_ sub:String) -> URL {
+        return self.datasetsDirectory().appendingPathComponent(sub)
     }
 
-    func webcontentDirectory() -> NSURL {
-        return self.applicationLibraryDirectory.URLByAppendingPathComponent("web_content")
+    func webcontentDirectory() -> URL {
+        return self.applicationLibraryDirectory.appendingPathComponent("web_content")
     }
 
-    func webcontentData() -> NSURL {
-        return self.webcontentDirectory().URLByAppendingPathComponent("data")
+    func webcontentData() -> URL {
+        return self.webcontentDirectory().appendingPathComponent("data")
     }
 }

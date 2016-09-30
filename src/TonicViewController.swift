@@ -32,98 +32,64 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
 
         self.startServer()
 
-        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        let screenSize: CGRect = UIScreen.main.bounds
         let frameRect: CGRect = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
 
         // Create url request from local index.html file located in web_content
-        let url: NSURL = NSURL(string: "http://localhost:\(self.port)/index.html")!
-        let requestObj: NSURLRequest = NSURLRequest(URL: url);
+        let url: URL = URL(string: "http://localhost:\(self.port)/index.html")!
+        let requestObj: URLRequest = URLRequest(url: url);
 
         self.wkWebView = WKWebView(frame: frameRect)
-        self.wkWebView?.loadRequest(requestObj)
+        let _ = self.wkWebView?.load(requestObj)
         self.wkWebView?.navigationDelegate = self
         self.view.insertSubview(self.wkWebView!, belowSubview: self.spinner)
 
         // set autolayout so the view is always 100% width and 100% height
         self.wkWebView.translatesAutoresizingMaskIntoConstraints = false
         let bindings:[String:AnyObject] = ["v1": self.wkWebView]
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[v1]-0-|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: bindings))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[v1]-0-|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: bindings))
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[v1]-0-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: nil, views: bindings))
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[v1]-0-|", options: NSLayoutFormatOptions.alignAllTop, metrics: nil, views: bindings))
 
         // always stay on,
-        UIApplication.sharedApplication().idleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = true
 
         // disable 'swipe to go back' gesture
-        self.navigationController?.interactivePopGestureRecognizer!.enabled = false
+        self.navigationController?.interactivePopGestureRecognizer!.isEnabled = false
 
         //check for default fullscreen, if it's on for the first time or retoggled then an alert is shown.
-        let store:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        self.fullscreen = store.boolForKey("fullscreen-viewer");
-        if self.fullscreen && !store.boolForKey("fullscreen-default-alert") {
+        let store:UserDefaults = UserDefaults.standard
+        self.fullscreen = store.bool(forKey: "fullscreen-viewer");
+        if self.fullscreen && !store.bool(forKey: "fullscreen-default-alert") {
             let alert = UIAlertView(title: "Fullscreen By Default",
                 message: "This view will initially appear fullscreen by default, shake to show the navigation bar." +
                 "This setting can be toggled from the Settings app.",
                 delegate: nil, cancelButtonTitle: "Ok")
             alert.show()
-            store.setBool(true, forKey: "fullscreen-default-alert")
+            store.set(true, forKey: "fullscreen-default-alert")
         }
-        else if !store.boolForKey("fullscreen-default-alert") {
-            store.setBool(false, forKey: "fullscreen-default-alert")
+        else if !store.bool(forKey: "fullscreen-default-alert") {
+            store.set(false, forKey: "fullscreen-default-alert")
         }
         store.synchronize()
 
         // show a action button if the wifi is available.
-        if let ip:String = self.getWifiIP() {
+        if let ip:String = getWifiIP() {
             self.ipText = "A server is running at:\n\(ip)" + (self.port == 80 ? "/" : ":\(self.port)/")
-            let btnReload:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: Selector("showIpAlert"))
+            let btnReload:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.action, target: self, action: #selector(TonicViewController.showIpAlert))
             self.navigationController?.topViewController!.navigationItem.rightBarButtonItem = btnReload
-            btnReload.enabled = true
+            btnReload.isEnabled = true
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(self.fullscreen, animated: false)
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        UIApplication.sharedApplication().idleTimerDisabled = false
-        self.navigationController?.interactivePopGestureRecognizer!.enabled = true
-    }
-
-    func getWifiIP() -> String? {
-        var address:String?
-
-        // Get list of all interfaces on the local machine:
-        var ifaddr:UnsafeMutablePointer<ifaddrs> = nil
-        if getifaddrs(&ifaddr) == 0 {
-
-            // For each interface ...
-            for (var ptr = ifaddr; ptr != nil; ptr = ptr.memory.ifa_next) {
-                let interface = ptr.memory
-
-                // Check only IPv4 interfaces //or IPv6 interface:
-                let addrFamily = interface.ifa_addr.memory.sa_family
-                if addrFamily == UInt8(AF_INET) { //|| addrFamily == UInt8(AF_INET6) {
-
-                    // Check interface name:
-                    if let name = String.fromCString(interface.ifa_name) where name == "en0" {
-
-                        // Convert interface address to a human readable string:
-                        var addr = interface.ifa_addr.memory
-                        var hostname = [CChar](count: Int(NI_MAXHOST), repeatedValue: 0)
-                        getnameinfo(&addr, socklen_t(interface.ifa_addr.memory.sa_len),
-                            &hostname, socklen_t(hostname.count),
-                            nil, socklen_t(0), NI_NUMERICHOST)
-                        address = String.fromCString(hostname)
-                    }
-                }
-            }
-            freeifaddrs(ifaddr)
-        }
-
-        return address
+        UIApplication.shared.isIdleTimerDisabled = false
+        self.navigationController?.interactivePopGestureRecognizer!.isEnabled = true
     }
 
     func showIpAlert() {
@@ -132,32 +98,32 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
     }
 
     // shake motion to go fullscreen
-    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
-        if motion == UIEventSubtype.MotionShake {
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == UIEventSubtype.motionShake {
             self.fullscreen = !self.fullscreen;
             self.navigationController?.setNavigationBarHidden(self.fullscreen, animated: true)
             self.setNeedsStatusBarAppearanceUpdate()
 
-            let store:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            let times:Int = store.integerForKey("fullscreen-alert-times")
-            if self.fullscreen && !store.boolForKey("fullscreen-viewer") && times < 3 {
+            let store:UserDefaults = UserDefaults.standard
+            let times:Int = store.integer(forKey: "fullscreen-alert-times")
+            if self.fullscreen && !store.bool(forKey: "fullscreen-viewer") && times < 3 {
                 let alert = UIAlertView(title: "Fullscreen activated",
                     message: "A shaking motion toggles fullscreen, shake to undo. Fullscreen can be set to default from the Settings app.",
                     delegate: nil, cancelButtonTitle: "OK")
                 alert.show()
 
-                store.setInteger(times + 1, forKey: "fullscreen-alert-times")
+                store.set(times + 1, forKey: "fullscreen-alert-times")
                 store.synchronize()
             }
         }
     }
 
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return fullscreen
     }
 
     // there is a spinner that shows before the WebView is ready.
-    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.spinner.stopAnimating()
     }
 
@@ -165,35 +131,36 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
         let serverPath:String = self.paths.webcontentDirectory().absoluteString
         let server = self.makeServer(serverPath)
         self.server = server
-        var error: NSError?
-        if !server.start(self.port, error: &error) {
-            print("Server start error on port \(self.port):: \(error?.localizedDescription)")
+        do {
+            try self.server.start(self.port, forceIPv4: true)
+        } catch {
+            print("Server start error on port \(self.port):: \(error.localizedDescription)")
         }
     }
 
-    func makeServer(publicDir: String?) -> HttpServer {
+    func makeServer(_ publicDir: String?) -> HttpServer {
         let server = HttpServer()
 
         if let publicDir = publicDir {
             server["/(.+)"] = { request in
-                if NSFileManager.defaultManager().fileExistsAtPath("\(publicDir)\(request.url).gz") {
-                    if let response = NSData(contentsOfFile: "\(publicDir)\(request.url).gz") {
-                        return HttpResponse.RAW(200, "OK", ["Content-Encoding": "gzip"], response)
+                if FileManager.default.fileExists(atPath: "\(publicDir)\(request.address).gz") {
+                    if let response = NSData(contentsOfFile: "\(publicDir)\(request.address).gz") {
+                        return HttpResponse.raw(200, "OK", ["Content-Encoding": "gzip"], { try $0.write(response) })
                     }
                     else {
-                        return HttpResponse.NotFound
+                        return HttpResponse.notFound
                     }
                 }
                 else {
-                    return HttpHandlers.directory(publicDir)(request)
+                    return directoryBrowser(publicDir)(request)
                 }
             }
             server["/"] = {request in
                 if let html = NSData(contentsOfFile:"\(publicDir)/index.html"){
-                    return HttpResponse.RAW(200, "OK", nil, html)
+                    return HttpResponse.raw(200, "OK", nil, { try $0.write(html) })
                 }
                 else {
-                    return HttpResponse.NotFound
+                    return HttpResponse.notFound
                 }
             }
         }
