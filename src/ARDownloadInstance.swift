@@ -21,7 +21,7 @@ protocol ARDownloadInstanceDelegate {
     func progressUpdated(_ newVal:Float)
 }
 
-class ARDownloadInstance: NSObject {
+class ARDownloadInstance:NSObject {
     var delegate:ARDownloadInstanceDelegate!
     var progress:Float = 0.0 {
         didSet{
@@ -31,10 +31,11 @@ class ARDownloadInstance: NSObject {
     var downloadTitle:String = ""
     var downloadTask:URLSessionDownloadTask?
 
-    class var sharedInstance: ARDownloadInstance {
+    class var sharedInstance:ARDownloadInstance {
         struct Static {
-            static var instance : ARDownloadInstance?
+            static var sharedInstance: ARDownloadInstance = ARDownloadInstance()
         }
-        return Static.instance!
+
+        return Static.sharedInstance
     }
 }
