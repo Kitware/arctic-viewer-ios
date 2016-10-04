@@ -142,20 +142,22 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
         let server = HttpServer()
 
         if let publicDir = publicDir {
-            server["/(.+)"] = { request in
-                if FileManager.default.fileExists(atPath: "\(publicDir)\(request.address).gz") {
-                    if let response = NSData(contentsOfFile: "\(publicDir)\(request.address).gz") {
-                        return HttpResponse.raw(200, "OK", ["Content-Encoding": "gzip"], { try $0.write(response) })
-                    }
-                    else {
-                        return HttpResponse.notFound
-                    }
+            server.GET["/:file"] = { request in
+                if FileManager.default.fileExists(atPath: "\(publicDir)\(request.path).gz") {
+                    let response = NSData(contentsOfFile: "\(publicDir)\(request.path).gz")
+                    //print("response with gzip file: \(request.path)")
+                    return HttpResponse.raw(200, "OK", ["Content-Encoding": "gzip"], { try $0.write(response!) })
                 }
-                else {
-                    return directoryBrowser(publicDir)(request)
+
+                if FileManager.default.fileExists(atPath: "\(publicDir)\(request.path)") {
+                    let response = NSData(contentsOfFile: "\(publicDir)\(request.path)")
+                    //print("response with file: \(request.path)")
+                    return HttpResponse.raw(200, "OK", nil, { try $0.write(response!) })
+                } else {
+                    return HttpResponse.notFound
                 }
             }
-            server["/"] = {request in
+            server.GET["/"] = {request in
                 if let html = NSData(contentsOfFile:"\(publicDir)/index.html"){
                     return HttpResponse.raw(200, "OK", nil, { try $0.write(html) })
                 }
