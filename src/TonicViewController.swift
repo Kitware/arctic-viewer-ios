@@ -176,7 +176,7 @@ class TonicViewController: UIViewController, WKNavigationDelegate {
     }
 
     deinit {
-        server.stop();
+        self.server.stop()
     }
 }
 
