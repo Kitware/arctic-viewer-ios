@@ -19,23 +19,23 @@ class DownloadViewCell: UICollectionViewCell {
 
     var url:String = ""
 
-    override var selected:Bool {
+    override var isSelected:Bool {
         didSet {
             self.setNeedsDisplay()
         }
     }
 
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         self.contentView.layer.cornerRadius = 6.0
         self.contentView.layer.masksToBounds = true
 
-        if !self.selected {
+        if !self.isSelected {
             self.contentView.layer.borderWidth = 2.0
-            self.contentView.layer.borderColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), [0.3,0.3,0.3,0.25])
+            self.contentView.layer.borderColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [0.3,0.3,0.3,0.25])
         }
         else {
             self.contentView.layer.borderWidth = 4.0
-            self.contentView.layer.borderColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), [0,0.3,0.8,0.8])
+            self.contentView.layer.borderColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [0,0.3,0.8,0.8])
         }
     }
 }

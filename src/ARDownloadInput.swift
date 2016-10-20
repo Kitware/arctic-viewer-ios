@@ -17,17 +17,17 @@
 
 import UIKit
 
-public class ARDownloadInput: UITextField {
+open class ARDownloadInput: UITextField {
     
-    private let progressBar:CALayer = CALayer()
+    fileprivate let progressBar:CALayer = CALayer()
     
-    public var barColor:CGColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), [0, 0.4784, 1.0, 1])! {
+    open var barColor:CGColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [0, 0.4784, 1.0, 1])! {
         didSet {
             self.progressBar.backgroundColor = self.barColor
         }
     }
     
-    public var progress:Float = 0 {
+    open var progress:Float = 0 {
         didSet {
             self.progress = min(max(0, self.progress), 1.0)
             self.updateProgressBar()
@@ -44,8 +44,8 @@ public class ARDownloadInput: UITextField {
         self.commonInit()
     }
     
-    private func commonInit() {
-        self.progressBar.frame = CGRect(origin: CGPointZero, size: CGSize(width: 0, height: self.frame.height))
+    fileprivate func commonInit() {
+        self.progressBar.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 0, height: self.frame.height))
         self.progressBar.backgroundColor = self.barColor
         self.progressBar.cornerRadius = 4.0
         
@@ -53,13 +53,13 @@ public class ARDownloadInput: UITextField {
         self.layer.addSublayer(self.progressBar)
     }
     
-    override public func drawRect(rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
        //let frame = CGRect(origin: CGPointZero, size: CGSize(width: rect.size.width, height: rect.size.height))
     }
     
-    private func updateProgressBar() {
+    fileprivate func updateProgressBar() {
         let edgeOffset:CGFloat = self.progress > 0 ? 2.0 : 0.0
         let newSize:CGSize = CGSize(width: CGFloat(self.progress) * self.frame.width - edgeOffset, height: self.frame.height - edgeOffset )
-        self.progressBar.frame = CGRect(origin: CGPointMake(1, 1), size: newSize)
+        self.progressBar.frame = CGRect(origin: CGPoint(x: 1, y: 1), size: newSize)
     }
 }

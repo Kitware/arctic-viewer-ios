@@ -18,11 +18,10 @@
 import Foundation
 
 protocol ARDownloadInstanceDelegate {
-    func progressUpdated(newVal:Float)
+    func progressUpdated(_ newVal:Float)
 }
 
-class ARDownloadInstance: NSObject {
-
+class ARDownloadInstance:NSObject {
     var delegate:ARDownloadInstanceDelegate!
     var progress:Float = 0.0 {
         didSet{
@@ -30,18 +29,13 @@ class ARDownloadInstance: NSObject {
         }
     }
     var downloadTitle:String = ""
-    var downloadTask:NSURLSessionDownloadTask?
+    var downloadTask:URLSessionDownloadTask?
 
-    class var sharedInstance: ARDownloadInstance {
+    class var sharedInstance:ARDownloadInstance {
         struct Static {
-            static var instance : ARDownloadInstance?
-            static var token : dispatch_once_t = 0
+            static var sharedInstance: ARDownloadInstance = ARDownloadInstance()
         }
 
-        dispatch_once(&Static.token) {
-            Static.instance = ARDownloadInstance()
-        }
-
-        return Static.instance!
+        return Static.sharedInstance
     }
 }

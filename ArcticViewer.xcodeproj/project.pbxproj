@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23638902200AF9EA7BEFBC35 /* Pods_ArcticViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15D5A100E5425B03FAB2B198 /* Pods_ArcticViewer.framework */; };
 		6A26A1081B7AA624002C79F6 /* ArcticViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A26A1071B7AA624002C79F6 /* ArcticViewerTests.swift */; };
 		6A26A1381B7AA74E002C79F6 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A26A1111B7AA74E002C79F6 /* AboutViewController.swift */; };
 		6A26A1391B7AA74E002C79F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A26A1121B7AA74E002C79F6 /* AppDelegate.swift */; };
@@ -28,7 +29,6 @@
 		6A26A15A1B7AA999002C79F6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A26A1581B7AA999002C79F6 /* LaunchScreen.xib */; };
 		6A26A15B1B7AA999002C79F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A26A1591B7AA999002C79F6 /* Main.storyboard */; };
 		6A26A16C1B7AAA57002C79F6 /* web_content in Resources */ = {isa = PBXBuildFile; fileRef = 6A26A16B1B7AAA57002C79F6 /* web_content */; };
-		79C22126D426205CA8FFF6DA /* Pods_ArcticViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 816D293900B5ED24EC3F077C /* Pods_ArcticViewer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		46E51DBDBA408EB4B1BE58AC /* Pods-ArcticViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcticViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcticViewer/Pods-ArcticViewer.debug.xcconfig"; sourceTree = "<group>"; };
+		15D5A100E5425B03FAB2B198 /* Pods_ArcticViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArcticViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		48901C12A5258DD0DFC9ED81 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A26A0EC1B7AA624002C79F6 /* ArcticViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArcticViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A26A1011B7AA624002C79F6 /* ArcticViewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArcticViewerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,8 +70,8 @@
 		6A26A1581B7AA999002C79F6 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		6A26A1591B7AA999002C79F6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		6A26A16B1B7AAA57002C79F6 /* web_content */ = {isa = PBXFileReference; lastKnownFileType = folder; path = web_content; sourceTree = "<group>"; };
-		816D293900B5ED24EC3F077C /* Pods_ArcticViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArcticViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		924924844D173EB4CAC72DDF /* Pods-ArcticViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcticViewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-ArcticViewer/Pods-ArcticViewer.release.xcconfig"; sourceTree = "<group>"; };
+		AE847CAE422B77D64D12C947 /* Pods-ArcticViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcticViewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-ArcticViewer/Pods-ArcticViewer.release.xcconfig"; sourceTree = "<group>"; };
+		E1237CB1A7ABEC75D2B5C83E /* Pods-ArcticViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcticViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcticViewer/Pods-ArcticViewer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79C22126D426205CA8FFF6DA /* Pods_ArcticViewer.framework in Frameworks */,
+				23638902200AF9EA7BEFBC35 /* Pods_ArcticViewer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +100,7 @@
 				6A26A1041B7AA624002C79F6 /* ArcticViewerTests */,
 				6A26A0ED1B7AA624002C79F6 /* Products */,
 				7CE4CA764334FF753CFB32B8 /* Frameworks */,
-				9B5F31F488D6030621D56A8D /* Pods */,
+				F07CB6EEB7B982B411F94CE2 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -180,16 +180,16 @@
 			isa = PBXGroup;
 			children = (
 				48901C12A5258DD0DFC9ED81 /* Pods.framework */,
-				816D293900B5ED24EC3F077C /* Pods_ArcticViewer.framework */,
+				15D5A100E5425B03FAB2B198 /* Pods_ArcticViewer.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		9B5F31F488D6030621D56A8D /* Pods */ = {
+		F07CB6EEB7B982B411F94CE2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				46E51DBDBA408EB4B1BE58AC /* Pods-ArcticViewer.debug.xcconfig */,
-				924924844D173EB4CAC72DDF /* Pods-ArcticViewer.release.xcconfig */,
+				E1237CB1A7ABEC75D2B5C83E /* Pods-ArcticViewer.debug.xcconfig */,
+				AE847CAE422B77D64D12C947 /* Pods-ArcticViewer.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -201,12 +201,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6A26A10B1B7AA624002C79F6 /* Build configuration list for PBXNativeTarget "ArcticViewer" */;
 			buildPhases = (
-				B5E8E160F46D777E0D73BF18 /* Check Pods Manifest.lock */,
+				7D7C7DF2ECC313739D8B11AD /* [CP] Check Pods Manifest.lock */,
 				6A26A0E81B7AA624002C79F6 /* Sources */,
 				6A26A0E91B7AA624002C79F6 /* Frameworks */,
 				6A26A0EA1B7AA624002C79F6 /* Resources */,
-				2E4A521640A90137EFB0926F /* Copy Pods Resources */,
-				D650E8EFD5A3CA8B8093FEF7 /* Embed Pods Frameworks */,
+				BF934069070B8E0FB0D57ACC /* [CP] Embed Pods Frameworks */,
+				5AA8CFC684431660D8F4BB32 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -242,15 +242,18 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Kitware;
 				TargetAttributes = {
 					6A26A0EB1B7AA624002C79F6 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = W38PE5Y733;
+						DevelopmentTeam = 5X77V4GN72;
+						LastSwiftMigration = 0800;
 					};
 					6A26A1001B7AA624002C79F6 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 5X77V4GN72;
+						LastSwiftMigration = 0800;
 						TestTargetID = 6A26A0EB1B7AA624002C79F6;
 					};
 				};
@@ -301,14 +304,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2E4A521640A90137EFB0926F /* Copy Pods Resources */ = {
+		5AA8CFC684431660D8F4BB32 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,14 +319,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ArcticViewer/Pods-ArcticViewer-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B5E8E160F46D777E0D73BF18 /* Check Pods Manifest.lock */ = {
+		7D7C7DF2ECC313739D8B11AD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,14 +334,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		D650E8EFD5A3CA8B8093FEF7 /* Embed Pods Frameworks */ = {
+		BF934069070B8E0FB0D57ACC /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -399,8 +402,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -445,8 +450,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -465,6 +472,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -472,35 +480,43 @@
 		};
 		6A26A10C1B7AA624002C79F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46E51DBDBA408EB4B1BE58AC /* Pods-ArcticViewer.debug.xcconfig */;
+			baseConfigurationReference = E1237CB1A7ABEC75D2B5C83E /* Pods-ArcticViewer.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5X77V4GN72;
 				INFOPLIST_FILE = "$(SRCROOT)/src/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kitware.ArcticViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = src/ObjCBridge.h;
+				SWIFT_VERSION = 3.0;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
 		6A26A10D1B7AA624002C79F6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 924924844D173EB4CAC72DDF /* Pods-ArcticViewer.release.xcconfig */;
+			baseConfigurationReference = AE847CAE422B77D64D12C947 /* Pods-ArcticViewer.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5X77V4GN72;
 				INFOPLIST_FILE = "$(SRCROOT)/src/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kitware.ArcticViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = src/ObjCBridge.h;
+				SWIFT_VERSION = 3.0;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -508,6 +524,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 5X77V4GN72;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -516,6 +533,7 @@
 				INFOPLIST_FILE = ArcticViewerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ArcticViewer.app/ArcticViewer";
 			};
 			name = Debug;
@@ -524,10 +542,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 5X77V4GN72;
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = ArcticViewerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ArcticViewer.app/ArcticViewer";
 			};
 			name = Release;
