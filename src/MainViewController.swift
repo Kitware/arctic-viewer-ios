@@ -98,7 +98,7 @@ class MainViewController: UITableViewController, UINavigationControllerDelegate,
         }
         else {
             //this can fail for very large files if synchronus.
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
                 let size:String = self.sizeForFolder(title)
                 cell.subtitle?.text = "Size: " + size
 
@@ -229,7 +229,7 @@ class MainViewController: UITableViewController, UINavigationControllerDelegate,
             break
         case 0:
             let path:URL = self.paths.datasetsSubdirectory(self.dataFolders[self.cellToDelete])
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
                 try! FileManager.default.removeItem(atPath: path.absoluteString)
             })
 
