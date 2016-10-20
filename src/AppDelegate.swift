@@ -26,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "data-folder-sizes": [String:String](),
             "data-folder-thumbs": [String:String](),
 
-            "arctic-web-version": "v0.7.3",
-            "arctic-web-tags:": ["v0.7.3"],
+            "arctic-web-version": "v1.4.7",
+            "arctic-web-tags:": ["v1.4.7"],
 
             "fullscreen-viewer": false,
             "fullscreen-default-alert": false,
